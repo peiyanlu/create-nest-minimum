@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.3](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.2...0.0.3) (2025-03-08)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* fixed read file path errors ([c6d6a64](https://github.com/peiyanlu/create-nest-minimum/commit/c6d6a64dee797c81c6136d6d9e56ba48d4aeddfa))
+
 ## 0.0.2 (2025-03-08)
 
 ### ✨ Features | 新功能
