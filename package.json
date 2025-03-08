@@ -1,0 +1,59 @@
+{
+  "name": "create-nest-minimum",
+  "version": "0.0.1",
+  "description": "a create nest minimum app cli tool",
+  "author": "YanluPei",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "bin": {
+    "create-nest-minimum": "index.js",
+    "cnma": "index.js"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "prepack": "tsc",
+    "release": "release-it --patch"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.10.0",
+    "ansis": "^3.16.0",
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.0",
+    "@types/node": "^22.13.9",
+    "release-it": "^18.1.2",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  },
+  "private": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "nest",
+    "minimum",
+    "cli"
+  ],
+  "files": [
+    "dist",
+    "template",
+    "index.js",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:peiyanlu/create-nest-minimum.git"
+  },
+  "homepage": "https://github.com/peiyanlu/create-nest-minimum",
+  "bugs": {
+    "url": "https://github.com/peiyanlu/create-nest-minimum/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
+}
