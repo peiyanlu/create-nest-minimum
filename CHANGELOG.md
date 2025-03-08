@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.4](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.3...0.0.4) (2025-03-08)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* fixed template files path errors ([da0e152](https://github.com/peiyanlu/create-nest-minimum/commit/da0e1523085c949a0e3bf161e045f1f2f41defab))
+
 ## [0.0.3](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.2...0.0.3) (2025-03-08)
 
 ### 🐛 Bug Fixes | Bug 修复
