@@ -1,10 +1,11 @@
 import { red } from 'ansis'
 import { program } from 'commander'
 import { readFileSync } from 'node:fs'
+import { join } from 'path'
 import { Action } from './action'
 
 
-const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
+const pkg = JSON.parse(readFileSync(join(__dirname, '..', './package.json'), 'utf8'))
 
 program
   .name(pkg.name)
