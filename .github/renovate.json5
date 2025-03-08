@@ -1,0 +1,40 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "schedule:weekly",
+    "group:allNonMajor"
+  ],
+  "labels": [
+    "dependencies",
+    "devDependencies"
+  ],
+  "ignorePaths": [
+    "**/test/**"
+  ],
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "depTypeList": [
+        "peerDependencies"
+      ],
+      "enabled": false,
+    },
+  ],
+  "ignoreDeps": [
+    // manually bumping
+    "node",
+    "typescript",
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "src\/index\\.ts$"
+      ],
+      "matchStrings": [
+        "\/\/\\s*renovate:\\s+datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+(?:var|let|const)\\s+\\S+\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']",
+      ],
+    },
+  ],
+}
