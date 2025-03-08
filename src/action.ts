@@ -88,7 +88,7 @@ export class Action {
         title: MESSAGES.PROJECT_INFORMATION_START,
         task: async () => {
           // -----------------------------------------------------
-          const templateDir = resolve(__dirname, '..', '..', 'template')
+          const templateDir = resolve(__dirname, '..', 'template')
           await copyDirAsync(templateDir, root, httpLib)
           
           // -----------------------------------------------------
