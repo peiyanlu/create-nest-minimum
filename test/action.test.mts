@@ -45,7 +45,10 @@ describe('The project name cannot be used as the package name', () => {
     // 7. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 8. Confirm whether you use git
+    // 8. Confirm whether you use swc
+    mockedConfirm.mockResolvedValueOnce(true)
+    
+    // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(true)
   })
   
@@ -65,6 +68,7 @@ describe('The project name cannot be used as the package name', () => {
       pkgManager: 'npm',
       httpLib: 'express',
       useCli: true,
+      useSwc: true,
       useGit: true,
     })
   })
@@ -75,16 +79,16 @@ describe('The project name can be used as the package name', () => {
   beforeEach(async () => {
     vi.resetAllMocks()
     
-    await emptyDir(resolve(process.cwd(), 'nest-minimum-app'), [])
+    await emptyDir(resolve(process.cwd(), projectName), [])
     
     // 1. Get project name and target dir
-    mockedText.mockResolvedValueOnce('nest-minimum-app')
+    mockedText.mockResolvedValueOnce(projectName)
     
     // // 2. Handle directory if exist and not empty
     // mockedSelect.mockResolvedValueOnce('yes')
     
     // // 3. Get package name
-    // mockedText.mockResolvedValueOnce('nest-minimum-app')
+    // mockedText.mockResolvedValueOnce(projectName)
     
     // 4. Get project description
     mockedText.mockResolvedValueOnce('A nest minimum app')
@@ -98,7 +102,10 @@ describe('The project name can be used as the package name', () => {
     // 7. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 8. Confirm whether you use git
+    // 8. Confirm whether you use swc
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
@@ -112,12 +119,13 @@ describe('The project name can be used as the package name', () => {
     expect(confirm).toHaveBeenCalled()
     
     expect(res).toEqual({
-      targetDir: 'nest-minimum-app',
-      packageName: 'nest-minimum-app',
+      targetDir: projectName,
+      packageName: projectName,
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
       useCli: true,
+      useSwc: false,
       useGit: false,
     })
   })
@@ -128,7 +136,6 @@ describe('The project directory is not empty', () => {
   beforeEach(() => {
     vi.resetAllMocks()
     
-    const projectName = 'nest-minimum-app'
     mkdirSync(join(process.cwd(), projectName, 'subfolder'), { recursive: true })
     
     // 1. Get project name and target dir
@@ -138,7 +145,7 @@ describe('The project directory is not empty', () => {
     mockedSelect.mockResolvedValueOnce('yes')
     
     // // 3. Get package name
-    // mockedText.mockResolvedValueOnce('nest-minimum-app')
+    // mockedText.mockResolvedValueOnce(projectName)
     
     // 4. Get project description
     mockedText.mockResolvedValueOnce('A nest minimum app')
@@ -152,7 +159,10 @@ describe('The project directory is not empty', () => {
     // 7. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 8. Confirm whether you use git
+    // 8. Confirm whether you use swc
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
@@ -166,12 +176,13 @@ describe('The project directory is not empty', () => {
     expect(confirm).toHaveBeenCalled()
     
     expect(res).toEqual({
-      targetDir: 'nest-minimum-app',
-      packageName: 'nest-minimum-app',
+      targetDir: projectName,
+      packageName: projectName,
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
       useCli: true,
+      useSwc: false,
       useGit: false,
     })
   })
@@ -182,17 +193,16 @@ describe('The command-line argument overwrite is true', () => {
   beforeEach(() => {
     vi.resetAllMocks()
     
-    const projectName = 'nest-minimum-app'
     mkdirSync(join(process.cwd(), projectName, 'subfolder'), { recursive: true })
     
     // // 1. Get project name and target dir
-    // mockedText.mockResolvedValueOnce('nest-minimum-app')
+    // mockedText.mockResolvedValueOnce(projectName)
     
     // // 2. Handle directory if exist and not empty
     // mockedSelect.mockResolvedValueOnce('yes')
     
     // // 3. Get package name
-    // mockedText.mockResolvedValueOnce('nest-minimum-app')
+    // mockedText.mockResolvedValueOnce(projectName)
     
     // 4. Get project description
     mockedText.mockResolvedValueOnce('A nest minimum app')
@@ -206,26 +216,30 @@ describe('The command-line argument overwrite is true', () => {
     // 7. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 8. Confirm whether you use git
+    // 8. Confirm whether you use swc
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = await action.handelPrompts('nest-minimum-app', { overwrite: true })
+    const res = await action.handelPrompts(projectName, { overwrite: true })
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()
     expect(confirm).toHaveBeenCalled()
     
     expect(res).toEqual({
-      targetDir: 'nest-minimum-app',
-      packageName: 'nest-minimum-app',
+      targetDir: projectName,
+      packageName: projectName,
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
       useCli: true,
+      useSwc: false,
       useGit: false,
     })
   })
@@ -270,7 +284,7 @@ describe('The target directory is the current directory', () => {
     mockedSelect.mockResolvedValueOnce('ignore')
     
     // // 3. Get package name
-    // mockedText.mockResolvedValueOnce('nest-minimum-app')
+    // mockedText.mockResolvedValueOnce(projectName)
     
     // 4. Get project description
     mockedText.mockResolvedValueOnce('A nest minimum app')
@@ -284,7 +298,10 @@ describe('The target directory is the current directory', () => {
     // 7. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 8. Confirm whether you use git
+    // 8. Confirm whether you use swc
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
@@ -304,6 +321,7 @@ describe('The target directory is the current directory', () => {
       pkgManager: 'pnpm',
       httpLib: 'fastify',
       useCli: true,
+      useSwc: false,
       useGit: false,
     })
   })

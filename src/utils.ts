@@ -1,6 +1,6 @@
 import { execSync } from 'child_process'
 import { existsSync } from 'fs'
-import { readdir, rm } from 'node:fs/promises'
+import { readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { resolve } from 'path'
 
 
@@ -63,4 +63,9 @@ export const isEmpty = async (path: string, ignore: string[]) => {
   const a = files.sort()
   const b = ignore.sort()
   return a.length <= b.length && a.every((e, i) => e === b[i])
+}
+
+export const editFile = async (file: string, callback: (content: string) => string) => {
+  const content = await readFile(file, 'utf-8')
+  return writeFile(file, callback(content), 'utf-8')
 }
