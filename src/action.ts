@@ -1,12 +1,20 @@
 import { cancel, confirm, intro, isCancel, outro, select, tasks, text } from '@clack/prompts'
-import { MESSAGES } from './messages'
-import { emptyDir, execAsync, isEmpty, isValidPackageName, toValidPackageName, toValidProjectName } from './utils'
 import { cyan, grey } from 'ansis'
 import { execSync } from 'child_process'
 import { existsSync, mkdirSync } from 'node:fs'
 import { copyFile, readdir } from 'node:fs/promises'
 import { basename, join, relative, resolve } from 'node:path'
 import { setTimeout } from 'node:timers/promises'
+import { MESSAGES } from './messages'
+import {
+  editFile,
+  emptyDir,
+  execAsync,
+  isEmpty,
+  isValidPackageName,
+  toValidPackageName,
+  toValidProjectName,
+} from './utils'
 
 
 export enum PackageManager {
@@ -73,7 +81,7 @@ export class Action {
     intro(cyan('create-nest-minimum-app'))
     
     const config = await this.handelPrompts(cmdArgs, options)
-    const { targetDir, packageName, description, pkgManager, httpLib, useCli, useGit } = config
+    const { targetDir, packageName, description, pkgManager, httpLib, useCli, useSwc, useGit } = config
     
     if (options.dryRun) {
       outro(MESSAGES.DRY_RUN_MODE)
@@ -90,6 +98,17 @@ export class Action {
           // -----------------------------------------------------
           const templateDir = resolve(__dirname, '..', 'template')
           await copyDirAsync(templateDir, root, httpLib)
+          if (useSwc) {
+            await editFile(join(root, 'nest-cli.json'), (content: string) => {
+              const json = JSON.parse(content)
+              json.compilerOptions = {
+                builder: 'swc',
+                typeCheck: true,
+                ...json.compilerOptions,
+              }
+              return JSON.stringify(json, null, 2)
+            })
+          }
           
           // -----------------------------------------------------
           process.chdir(targetDir)
@@ -97,7 +116,14 @@ export class Action {
           // -----------------------------------------------------
           const del = [ `@nestjs/platform-${ reverseFiles[httpLib] }` ]
             .map(k => `dependencies[${ k }]`)
-            .concat((!useCli ? [ '@nestjs/cli', '@nestjs/schematics' ] : []).map(k => `devDependencies[${ k }]`))
+            .concat((
+                !useCli
+                  ? [ '@nestjs/cli', '@nestjs/schematics' ]
+                  : !useSwc
+                    ? [ '@swc/cli', '@swc/core' ]
+                    : []
+              ).map(k => `devDependencies[${ k }]`),
+            )
             .join(' ')
           const cmdArr = [
             `npm pkg set name="${ packageName }" description="${ description }"`,
@@ -265,7 +291,13 @@ export class Action {
     }) as boolean
     assertPrompt(useCli)
     
-    // 8. Confirm whether you use git
+    // 8. Confirm whether you use @nestjs/cli
+    const useSwc = await confirm({
+      message: MESSAGES.SWC_USE_QUESTION,
+    }) as boolean
+    assertPrompt(useSwc)
+    
+    // 9. Confirm whether you use git
     const useGit = await confirm({
       message: MESSAGES.GIT_USE_QUESTION,
     })
@@ -278,6 +310,7 @@ export class Action {
       pkgManager,
       httpLib,
       useCli,
+      useSwc,
       useGit,
     }
   }
