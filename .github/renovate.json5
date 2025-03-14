@@ -13,13 +13,40 @@
     "**/test/**"
   ],
   "rangeStrategy": "bump",
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "timezone": "Asia/Shanghai",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
     {
-      "depTypeList": [
+      "matchDepTypes": [
         "peerDependencies"
       ],
-      "enabled": false,
+      "enabled": false
     },
+    {
+      "matchDepTypes": [
+        "devDependencies",
+        "dependencies"
+      ],
+      "groupName": "allDependencies",
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    }
   ],
   "ignoreDeps": [
     // manually bumping
