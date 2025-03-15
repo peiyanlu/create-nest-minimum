@@ -114,16 +114,15 @@ export class Action {
           process.chdir(targetDir)
           
           // -----------------------------------------------------
+          const swcDeps = [ '@swc/cli', '@swc/core' ]
+          const devDeps = useSwc
+            ? []
+            : useCli
+              ? swcDeps
+              : [ ...swcDeps, '@nestjs/cli' ]
           const del = [ `@nestjs/platform-${ reverseFiles[httpLib] }` ]
             .map(k => `dependencies[${ k }]`)
-            .concat((
-                !useCli
-                  ? [ '@nestjs/cli', '@nestjs/schematics' ]
-                  : !useSwc
-                    ? [ '@swc/cli', '@swc/core' ]
-                    : []
-              ).map(k => `devDependencies[${ k }]`),
-            )
+            .concat((devDeps).map(k => `devDependencies[${ k }]`))
             .join(' ')
           const cmdArr = [
             `npm pkg set name="${ packageName }" description="${ description }"`,
@@ -285,22 +284,23 @@ export class Action {
     }) as HttpLibrary
     assertPrompt(httpLib)
     
-    // 7. Confirm whether you use @nestjs/cli
-    const useCli = await confirm({
-      message: MESSAGES.CLI_USE_QUESTION,
-    }) as boolean
-    assertPrompt(useCli)
-    
-    // 8. Confirm whether you use @nestjs/cli
+    // 7. Confirm whether you use SWC
     const useSwc = await confirm({
       message: MESSAGES.SWC_USE_QUESTION,
     }) as boolean
     assertPrompt(useSwc)
     
+    // 8. Confirm whether you use @nestjs/cli
+    const useCli = useSwc || await confirm({
+      message: MESSAGES.CLI_USE_QUESTION,
+      inactive: `No (Installed globally)`,
+    }) as boolean
+    assertPrompt(useCli)
+    
     // 9. Confirm whether you use git
     const useGit = await confirm({
       message: MESSAGES.GIT_USE_QUESTION,
-    })
+    }) as boolean
     assertPrompt(useGit)
     
     return {
