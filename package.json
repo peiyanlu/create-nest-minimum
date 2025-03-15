@@ -1,7 +1,7 @@
 {
   "name": "create-nest-minimum",
   "version": "0.0.6",
-  "description": "a create nest minimum app cli tool",
+  "description": "A create nest minimum app cli tool.",
   "author": "YanluPei",
   "license": "MIT",
   "main": "dist/index.js",
