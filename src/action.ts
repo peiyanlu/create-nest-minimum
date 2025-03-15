@@ -34,6 +34,17 @@ export enum YesOrNo {
   Null = 'null',
 }
 
+export interface PromptsResult {
+  targetDir: string;
+  packageName: string;
+  description: string;
+  pkgManager: PackageManager;
+  httpLib: HttpLibrary;
+  useVitest: boolean;
+  useSwc: boolean;
+  useCli: boolean;
+  useGit: boolean;
+}
 
 const renameFiles: Record<string, string | undefined> = {
   _gitignore: '.gitignore',
@@ -41,16 +52,25 @@ const renameFiles: Record<string, string | undefined> = {
   [`${ HttpLibrary.FASTIFY }.ts`]: 'main.ts',
 }
 
+const vitestFiles: string[] = [
+  'app.controller.spec.ts',
+  'test',
+  'app.e2e-spec.ts',
+  'vitest.config.mts',
+  'vitest.config.e2e.mts',
+]
+
 const reverseFiles = {
   [HttpLibrary.FASTIFY]: HttpLibrary.EXPRESS,
   [HttpLibrary.EXPRESS]: HttpLibrary.FASTIFY,
 }
 
 
-const copyDirAsync = async (source: string, target: string, httpLib: string) => {
+const copyDirAsync = async (source: string, target: string, opts: PromptsResult) => {
   mkdirSync(target, { recursive: true })
   const entries = await readdir(source, { withFileTypes: true })
   for (const entry of entries) {
+    const { httpLib, useVitest } = opts
     const name = entry.name
     const isDir = entry.isDirectory()
     
@@ -58,10 +78,14 @@ const copyDirAsync = async (source: string, target: string, httpLib: string) => 
       continue
     }
     
+    if (!useVitest && vitestFiles.includes(name)) {
+      continue
+    }
+    
     const srcPath = join(source, name)
     const destPath = join(target, !isDir ? (renameFiles[name] ?? name) : name)
     if (isDir) {
-      await copyDirAsync(srcPath, destPath, httpLib)
+      await copyDirAsync(srcPath, destPath, opts)
     } else {
       await copyFile(srcPath, destPath)
     }
@@ -81,7 +105,7 @@ export class Action {
     intro(cyan('create-nest-minimum-app'))
     
     const config = await this.handelPrompts(cmdArgs, options)
-    const { targetDir, packageName, description, pkgManager, httpLib, useCli, useSwc, useGit } = config
+    const { targetDir, packageName, description, pkgManager, httpLib, useSwc, useCli, useVitest, useGit } = config
     
     if (options.dryRun) {
       outro(MESSAGES.DRY_RUN_MODE)
@@ -97,14 +121,17 @@ export class Action {
         task: async () => {
           // -----------------------------------------------------
           const templateDir = resolve(__dirname, '..', 'template')
-          await copyDirAsync(templateDir, root, httpLib)
-          if (useSwc) {
+          await copyDirAsync(templateDir, root, config)
+          if (useSwc || useVitest) {
             await editFile(join(root, 'nest-cli.json'), (content: string) => {
               const json = JSON.parse(content)
-              json.compilerOptions = {
-                builder: 'swc',
-                typeCheck: true,
-                ...json.compilerOptions,
+              json.generateOptions.spec = useVitest
+              if (useSwc) {
+                json.compilerOptions = {
+                  builder: 'swc',
+                  typeCheck: true,
+                  ...json.compilerOptions,
+                }
               }
               return JSON.stringify(json, null, 2)
             })
@@ -114,12 +141,27 @@ export class Action {
           process.chdir(targetDir)
           
           // -----------------------------------------------------
+          const vitest = [
+            'vitest',
+            '@vitest/coverage-v8',
+            'unplugin-swc',
+            '@nestjs/testing',
+            'supertest',
+            '@types/supertest',
+          ]
           const swcDeps = [ '@swc/cli', '@swc/core' ]
-          const devDeps = useSwc
+          const cli = [ '@nestjs/cli' ]
+          
+          const devDeps = (useSwc || useVitest)
             ? []
             : useCli
               ? swcDeps
-              : [ ...swcDeps, '@nestjs/cli' ]
+              : [ ...swcDeps, ...cli ]
+          
+          if (!useVitest) {
+            devDeps.push(...vitest)
+          }
+          
           const del = [ `@nestjs/platform-${ reverseFiles[httpLib] }` ]
             .map(k => `dependencies[${ k }]`)
             .concat((devDeps).map(k => `devDependencies[${ k }]`))
@@ -130,6 +172,23 @@ export class Action {
           ]
           for (const cmd of cmdArr) {
             await execAsync(cmd)
+          }
+          
+          // -----------------------------------------------------
+          if (useVitest) {
+            const temp = Object.entries({
+              test: 'vitest',
+              'test:e2e': 'vitest run -c ./vitest.config.e2e.mts',
+              'test:cov': 'vitest run --coverage',
+            }).map(([ k, v ]) => {
+              return `scripts.${ k }="${ v }" `
+            })
+            const cmdArr = [
+              `npm pkg set ${ temp.join(' ') }`,
+            ]
+            for (const cmd of cmdArr) {
+              await execAsync(cmd)
+            }
           }
           
           // -----------------------------------------------------
@@ -172,7 +231,7 @@ export class Action {
     process.exit(0)
   }
   
-  async handelPrompts(cmdArgs: string | undefined, options: Record<string, boolean>) {
+  async handelPrompts(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<PromptsResult> {
     // 1. Get project name and target dir
     let targetDir = cmdArgs ? toValidProjectName(cmdArgs) : undefined
     if (!targetDir) {
@@ -238,7 +297,7 @@ export class Action {
     const description = await text({
       message: MESSAGES.PACKAGE_DESCRIPTION_QUESTION,
       placeholder: 'Anonymous',
-      defaultValue: 'nest minimum app',
+      defaultValue: 'Nest Minimum Application',
     }) as string
     assertPrompt(description)
     
@@ -284,20 +343,26 @@ export class Action {
     }) as HttpLibrary
     assertPrompt(httpLib)
     
-    // 7. Confirm whether you use SWC
-    const useSwc = await confirm({
+    // 7. Confirm whether you use Vitest
+    const useVitest = await confirm({
+      message: MESSAGES.VITEST_USE_QUESTION,
+    }) as boolean
+    assertPrompt(useVitest)
+    
+    // 8. Confirm whether you use SWC
+    const useSwc = useVitest || await confirm({
       message: MESSAGES.SWC_USE_QUESTION,
     }) as boolean
     assertPrompt(useSwc)
     
-    // 8. Confirm whether you use @nestjs/cli
+    // 9. Confirm whether you use @nestjs/cli
     const useCli = useSwc || await confirm({
       message: MESSAGES.CLI_USE_QUESTION,
       inactive: `No (Installed globally)`,
     }) as boolean
     assertPrompt(useCli)
     
-    // 9. Confirm whether you use git
+    // 10. Confirm whether you use Git
     const useGit = await confirm({
       message: MESSAGES.GIT_USE_QUESTION,
     }) as boolean
@@ -309,8 +374,9 @@ export class Action {
       description,
       pkgManager,
       httpLib,
-      useCli,
+      useVitest,
       useSwc,
+      useCli,
       useGit,
     }
   }
