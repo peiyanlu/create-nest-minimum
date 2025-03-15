@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.6](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.5...0.0.6) (2025-03-15)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* fixed SWC configuration errors ([d19064c](https://github.com/peiyanlu/create-nest-minimum/commit/d19064c7df1fc787f72590e0f7f1f6dbf63e0437))
+
 ## [0.0.5](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.4...0.0.5) (2025-03-14)
 
 ### ✨ Features | 新功能
