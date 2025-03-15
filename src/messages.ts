@@ -7,7 +7,7 @@ export const MESSAGES = {
   PACKAGE_DESCRIPTION_QUESTION: 'Project description:',
   GIT_USE_QUESTION: `Create git repository?`,
   CLI_USE_QUESTION: `Use ${ green('@nestjs/cli') } as devDependencies?`,
-  SWC_USE_QUESTION: `Use ${ green('SWC') }（Speedy Web Compiler）?`,
+  SWC_USE_QUESTION: `Use ${ green('SWC') } (Speedy Web Compiler) ?`,
   HTTP_LIBRARY_QUESTION: `Select HTTP library:`,
   DIRECTION_CONFLICT_QUESTION: (targetDir: string) => {
     return `${ targetDir === '.' ? 'Current' : 'Target' } directory "${ green(targetDir) }" is not empty:`

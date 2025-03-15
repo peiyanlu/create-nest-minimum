@@ -42,11 +42,11 @@ describe('The project name cannot be used as the package name', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('express')
     
-    // 7. Confirm whether you use @nestjs/cli
+    // 7. Confirm whether you use swc
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 8. Confirm whether you use swc
-    mockedConfirm.mockResolvedValueOnce(true)
+    // // 8. Confirm whether you use @nestjs/cli
+    // mockedConfirm.mockResolvedValueOnce(true)
     
     // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(true)
@@ -99,11 +99,11 @@ describe('The project name can be used as the package name', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use @nestjs/cli
-    mockedConfirm.mockResolvedValueOnce(true)
-    
-    // 8. Confirm whether you use swc
+    // 7. Confirm whether you use swc
     mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 8. Confirm whether you use @nestjs/cli
+    mockedConfirm.mockResolvedValueOnce(true)
     
     // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
@@ -156,11 +156,11 @@ describe('The project directory is not empty', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use @nestjs/cli
-    mockedConfirm.mockResolvedValueOnce(true)
-    
-    // 8. Confirm whether you use swc
+    // 7. Confirm whether you use swc
     mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 8. Confirm whether you use @nestjs/cli
+    mockedConfirm.mockResolvedValueOnce(true)
     
     // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
@@ -213,11 +213,11 @@ describe('The command-line argument overwrite is true', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use @nestjs/cli
-    mockedConfirm.mockResolvedValueOnce(true)
-    
-    // 8. Confirm whether you use swc
+    // 7. Confirm whether you use swc
     mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 8. Confirm whether you use @nestjs/cli
+    mockedConfirm.mockResolvedValueOnce(true)
     
     // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
@@ -295,11 +295,11 @@ describe('The target directory is the current directory', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use @nestjs/cli
-    mockedConfirm.mockResolvedValueOnce(true)
-    
-    // 8. Confirm whether you use swc
+    // 7. Confirm whether you use swc
     mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 8. Confirm whether you use @nestjs/cli
+    mockedConfirm.mockResolvedValueOnce(true)
     
     // 9. Confirm whether you use git
     mockedConfirm.mockResolvedValueOnce(false)
