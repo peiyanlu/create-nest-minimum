@@ -42,13 +42,16 @@ describe('The project name cannot be used as the package name', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('express')
     
-    // 7. Confirm whether you use swc
+    // 7. Confirm whether you use Vitest
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // // 8. Confirm whether you use @nestjs/cli
+    // // 8. Confirm whether you use SWC
     // mockedConfirm.mockResolvedValueOnce(true)
     
-    // 9. Confirm whether you use git
+    // // 9. Confirm whether you use @nestjs/cli
+    // mockedConfirm.mockResolvedValueOnce(true)
+    
+    // 10. Confirm whether you use Git
     mockedConfirm.mockResolvedValueOnce(true)
   })
   
@@ -67,8 +70,9 @@ describe('The project name cannot be used as the package name', () => {
       description: 'A nest minimum app',
       pkgManager: 'npm',
       httpLib: 'express',
-      useCli: true,
+      useVitest: true,
       useSwc: true,
+      useCli: true,
       useGit: true,
     })
   })
@@ -99,13 +103,16 @@ describe('The project name can be used as the package name', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use swc
+    // 7. Confirm whether you use Vitest
     mockedConfirm.mockResolvedValueOnce(false)
     
-    // 8. Confirm whether you use @nestjs/cli
+    // 8. Confirm whether you use SWC
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 9. Confirm whether you use git
+    // // 9. Confirm whether you use @nestjs/cli
+    // mockedConfirm.mockResolvedValueOnce(true)
+    
+    // 10. Confirm whether you use Git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
@@ -124,8 +131,9 @@ describe('The project name can be used as the package name', () => {
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
+      useVitest: false,
+      useSwc: true,
       useCli: true,
-      useSwc: false,
       useGit: false,
     })
   })
@@ -156,13 +164,16 @@ describe('The project directory is not empty', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use swc
+    // 7. Confirm whether you use Vitest
     mockedConfirm.mockResolvedValueOnce(false)
     
-    // 8. Confirm whether you use @nestjs/cli
+    // 8. Confirm whether you use SWC
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 9. Confirm whether you use git
+    // 10. Confirm whether you use Git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
@@ -181,8 +192,9 @@ describe('The project directory is not empty', () => {
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
-      useCli: true,
+      useVitest: false,
       useSwc: false,
+      useCli: true,
       useGit: false,
     })
   })
@@ -213,14 +225,17 @@ describe('The command-line argument overwrite is true', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use swc
+    // 7. Confirm whether you use Vitest
     mockedConfirm.mockResolvedValueOnce(false)
     
-    // 8. Confirm whether you use @nestjs/cli
+    // 8. Confirm whether you use SWC
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 9. Confirm whether you use git
-    mockedConfirm.mockResolvedValueOnce(false)
+    // 10. Confirm whether you use Git
+    mockedConfirm.mockResolvedValueOnce(true)
   })
   
   it('should run create action correctly', async () => {
@@ -238,9 +253,10 @@ describe('The command-line argument overwrite is true', () => {
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
-      useCli: true,
+      useVitest: false,
       useSwc: false,
-      useGit: false,
+      useCli: true,
+      useGit: true,
     })
   })
 })
@@ -295,13 +311,16 @@ describe('The target directory is the current directory', () => {
     // 6. Choose an HTTP library
     mockedSelect.mockResolvedValueOnce('fastify')
     
-    // 7. Confirm whether you use swc
+    // 7. Confirm whether you use Vitest
     mockedConfirm.mockResolvedValueOnce(false)
     
-    // 8. Confirm whether you use @nestjs/cli
+    // 8. Confirm whether you use SWC
+    mockedConfirm.mockResolvedValueOnce(false)
+    
+    // 9. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 9. Confirm whether you use git
+    // 10. Confirm whether you use Git
     mockedConfirm.mockResolvedValueOnce(false)
   })
   
@@ -320,8 +339,9 @@ describe('The target directory is the current directory', () => {
       description: 'A nest minimum app',
       pkgManager: 'pnpm',
       httpLib: 'fastify',
-      useCli: true,
+      useVitest: false,
       useSwc: false,
+      useCli: true,
       useGit: false,
     })
   })
