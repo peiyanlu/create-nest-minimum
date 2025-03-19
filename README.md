@@ -1,3 +1,14 @@
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/create-nest-minimum" target="_blank"><img src="https://img.shields.io/npm/v/create-nest-minimum.svg" alt="NPM Version" /></a>
+  <a href="https://www.npmjs.com/package/create-nest-minimum" target="_blank"><img src="https://img.shields.io/npm/l/create-nest-minimum.svg" alt="Package License" /></a>
+  <a href="https://www.npmjs.com/package/create-nest-minimum" target="_blank"><img src="https://img.shields.io/npm/dm/create-nest-minimum.svg" alt="NPM Downloads" /></a>
+</p>
+
+
 # Create Nest Minimum Application
 
 

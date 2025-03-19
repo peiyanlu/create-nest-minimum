@@ -120,11 +120,13 @@ export class Action {
       {
         title: MESSAGES.PROJECT_INFORMATION_START,
         task: async () => {
+          const jr = (p: string) => join(root, p)
+          
           // -----------------------------------------------------
           const templateDir = resolve(__dirname, '..', 'template')
           await copyDirAsync(templateDir, root, config)
           if (useSwc || useVitest) {
-            await editFile(join(root, 'nest-cli.json'), (content: string) => {
+            await editFile(jr('nest-cli.json'), (content: string) => {
               const json = JSON.parse(content)
               json.generateOptions.spec = useVitest
               if (useSwc) {
@@ -142,7 +144,7 @@ export class Action {
             // renovate: datasource=npm depName=vitest
             const rVersion = '3.0.8'
             
-            await editFile(join(root, 'tsconfig.json'), (content: string) => {
+            await editFile(jr('tsconfig.json'), (content: string) => {
               const json = JSON.parse(content)
               json.compilerOptions.paths = {
                 '@src/*': [ './src/*' ],
@@ -152,6 +154,17 @@ export class Action {
               return JSON.stringify(json, null, 2)
             })
           }
+          
+          await editFile(jr('README.md'), content => {
+            const isYarn = pkgManager === PackageManager.YARN
+            return content
+              .replace(/\$PACKAGE_NAME/g, packageName)
+              .replace(/\$DESCRIPTION/g, description)
+              .replace(/\$INSTALL/g, isYarn ? 'yarn' : `${ pkgManager } install`)
+              .replace(/\$RUN/g, isYarn ? 'yarn' : `${ pkgManager } run`)
+              .replace(/\$START([\s\S]*?)\$END/g, (_, $1) => useVitest ? $1 : '')
+              .replace(/(\r?\n){3,}/g, '\r\n'.repeat(2))
+          })
           
           // -----------------------------------------------------
           process.chdir(targetDir)
