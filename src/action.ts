@@ -58,6 +58,7 @@ const vitestFiles: string[] = [
   'app.e2e-spec.ts',
   'vitest.config.mts',
   'vitest.config.e2e.mts',
+  'vitest-globals.d.ts',
 ]
 
 const reverseFiles = {
@@ -132,6 +133,21 @@ export class Action {
                   typeCheck: true,
                   ...json.compilerOptions,
                 }
+              }
+              return JSON.stringify(json, null, 2)
+            })
+          }
+          
+          if (useVitest) {
+            // renovate: datasource=npm depName=vitest
+            const rVersion = '3.0.8'
+            
+            await editFile(join(root, 'tsconfig.json'), (content: string) => {
+              const json = JSON.parse(content)
+              json.compilerOptions.paths = {
+                '@src/*': [ './src/*' ],
+                '@test/*': [ './test/*' ],
+                ...json.compilerOptions.paths,
               }
               return JSON.stringify(json, null, 2)
             })
