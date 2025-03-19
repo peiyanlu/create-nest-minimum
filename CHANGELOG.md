@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.8](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.7...0.0.8) (2025-03-19)
+
+### 🔨 CONFIG | 配置
+
+* update Vitest options ([859b59b](https://github.com/peiyanlu/create-nest-minimum/commit/859b59b30491ae775011018de3da833a7b16cdf8))
+
 ## [0.0.7](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.6...0.0.7) (2025-03-15)
 
 ### ✨ Features | 新功能
