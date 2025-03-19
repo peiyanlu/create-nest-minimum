@@ -1,28 +1,29 @@
+import { resolve } from 'path'
 import swc from 'unplugin-swc'
 import { defineConfig } from 'vitest/config'
 
 
+const alias = {
+  '@src': resolve(__dirname, './src'),
+  '@test': resolve(__dirname, './test'),
+}
+
 export default defineConfig({
   test: {
-    globals: false,
+    globals: true,
     root: './',
     coverage: {
       provider: 'v8',
     },
-    alias: {
-      '@src': './src',
-      '@test': './test',
-    },
+    alias,
   },
   plugins: [
     swc.vite({
+      // Explicitly set the module type to avoid inheriting this value from a `.swcrc` config file.
       module: { type: 'es6' },
     }),
   ],
   resolve: {
-    alias: {
-      '@src': './src',
-      '@test': './test',
-    },
+    alias,
   },
 })

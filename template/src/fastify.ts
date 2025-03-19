@@ -10,7 +10,7 @@ const bootstrap = async (port: number | string) => {
   )
   await app.listen(port)
   
-  console.log(`\nApp listening on: http://127.0.0.1:${ port }`)
+  console.log(`\nApplication is running on: ${ await app.getUrl() }`)
 }
 
 bootstrap(process.env.PORT ?? 3000).catch(console.error)

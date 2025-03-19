@@ -48,11 +48,7 @@
       "automerge": false
     }
   ],
-  "ignoreDeps": [
-    // manually bumping
-    "node",
-    "typescript",
-  ],
+  "ignoreDeps": [],
   "customManagers": [
     {
       "customType": "regex",
@@ -60,8 +56,8 @@
         "src\/index\\.ts$"
       ],
       "matchStrings": [
-        "\/\/\\s*renovate:\\s+datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+(?:var|let|const)\\s+\\S+\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']",
-      ],
-    },
-  ],
+        "\/\/\\s*renovate:\\s+datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+(?:var|let|const)\\s+\\S+\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']"
+      ]
+    }
+  ]
 }
