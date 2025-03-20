@@ -48,7 +48,11 @@
       "automerge": false
     }
   ],
-  "ignoreDeps": [],
+  "ignoreDeps": [
+    // manually bumping
+    // engines.node
+    "node"
+  ],
   "customManagers": [
     {
       "customType": "regex",
