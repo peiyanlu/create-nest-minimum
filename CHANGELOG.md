@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.9](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.8...0.0.9) (2025-03-20)
+
+### 🔨 CONFIG | 配置
+
+* support generate README.md file ([30e534a](https://github.com/peiyanlu/create-nest-minimum/commit/30e534a9873be3f84c3e89fcb4c829d17017715f))
+
 ## [0.0.8](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.7...0.0.8) (2025-03-19)
 
 ### 🔨 CONFIG | 配置
