@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.0.10](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.9...0.0.10) (2025-03-20)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **deps:** update alldependencies ([d3c337d](https://github.com/peiyanlu/create-nest-minimum/commit/d3c337d843ee245bb7e1814e716bb2c249c26a64))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** lock file maintenance ([5fb3501](https://github.com/peiyanlu/create-nest-minimum/commit/5fb3501752bdd5ba26eb97a5db71a710addf7c55))
+* **deps:** update node.js to >=20.19.0 ([dc2e02a](https://github.com/peiyanlu/create-nest-minimum/commit/dc2e02a4aae2500102998a2d208e55c716cb0248))
+
+### 📝 Documentation | 文档
+
+* update README.md file ([6479d4e](https://github.com/peiyanlu/create-nest-minimum/commit/6479d4eacf933183488ae548fd62be29b7ee1c18))
+
+### ⏪ Reverts | 回退
+
+* rollback Node.js version in package.json ([b94fffd](https://github.com/peiyanlu/create-nest-minimum/commit/b94fffdfe7fa07a1fadc4798697ac8533f876f11))
+
+### 🔧 Continuous Integration | CI 配置
+
+* update release-it configuration ([50a23c0](https://github.com/peiyanlu/create-nest-minimum/commit/50a23c00dd91d5c0a8995fb422cb8a50346734e0))
+* update renovate.json to optimize dependency updates ([d7b446d](https://github.com/peiyanlu/create-nest-minimum/commit/d7b446d41e45d52eccc3f0b9b94347a63eeb3830))
+
 ## [0.0.9](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.8...0.0.9) (2025-03-20)
 
 ### 🔨 CONFIG | 配置
