@@ -4,12 +4,17 @@
     "release": true
   },
   "git": {
-    "commitMessage": "release: v${version}"
+    "commitMessage": "chore(release): v${version}",
+    "push": true
   },
   "npm": {
-    "publish": true
+    "skipChecks": true,
+    "publish": true,
+    "tag": "latest"
   },
   "hooks": {
+    "before:init": "npm config set package-lock false --location=project",
+    "before:release": "pnpm run build",
     "after:bump": "echo update version success"
   },
   "plugins": {
