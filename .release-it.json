@@ -1,21 +1,21 @@
 {
   "$schema": "https://unpkg.com/release-it/schema/release-it.json",
   "github": {
+    "preRelease": true,
     "release": true
   },
   "git": {
-    "commitMessage": "chore(release): v${version}",
-    "push": true
+    "commitMessage": "chore(release): v${version}"
   },
   "npm": {
     "skipChecks": true,
-    "publish": true,
     "tag": "latest"
   },
   "hooks": {
     "before:init": "npm config set package-lock false --location=project",
     "before:release": "pnpm run build",
-    "after:bump": "echo update version success"
+    "after:bump": "echo update version success",
+    "after:release": "npm config delete package-lock --location=project"
   },
   "plugins": {
     "@release-it/conventional-changelog": {

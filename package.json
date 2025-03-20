@@ -17,7 +17,7 @@
     "test": "vitest",
     "prepack": "tsc",
     "prepublish": "tsc",
-    "release": "release-it --patch"
+    "release": "release-it"
   },
   "dependencies": {
     "@clack/prompts": "^0.10.0",
