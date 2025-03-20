@@ -50,7 +50,7 @@
   ],
   "ignoreDeps": [
     // manually bumping
-    // engines.node
+    // ↓ engines.node
     "node"
   ],
   "customManagers": [
