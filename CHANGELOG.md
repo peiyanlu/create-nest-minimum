@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.12](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.11...0.0.12) (2025-03-21)
+
+### ✨ Features | 新功能
+
+* add automatic detection for Git repository ([3487bdd](https://github.com/peiyanlu/create-nest-minimum/commit/3487bdd45b75583965854f01da7f63420ff27f67))
+
 ## [0.0.11](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.10...0.0.11) (2025-03-21)
 
 ### 🔧 Continuous Integration | CI 配置
