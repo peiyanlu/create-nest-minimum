@@ -11,6 +11,7 @@ import {
   emptyDir,
   execAsync,
   isEmpty,
+  isGitRepo,
   isValidPackageName,
   toValidPackageName,
   toValidProjectName,
@@ -265,7 +266,8 @@ export class Action {
     
     // 2. Handle directory if exist and not empty
     const isExists = existsSync(targetDir)
-    if (isExists && !await isEmpty(targetDir, [ '.git' ])) {
+    const ignore = [ '.git', '.idea', '.vscode' ]
+    if (isExists && !await isEmpty(targetDir, ignore)) {
       const overwrite = options.overwrite
         ? YesOrNo.Yes
         : await select({
@@ -288,7 +290,7 @@ export class Action {
       assertPrompt(overwrite)
       switch (overwrite) {
         case YesOrNo.Yes:
-          await emptyDir(targetDir, [])
+          await emptyDir(targetDir, ignore)
           break
         case YesOrNo.No:
           process.exit(0)
@@ -382,7 +384,7 @@ export class Action {
     assertPrompt(useCli)
     
     // 10. Confirm whether you use Git
-    const useGit = await confirm({
+    const useGit = await isGitRepo() || await confirm({
       message: MESSAGES.GIT_USE_QUESTION,
     }) as boolean
     assertPrompt(useGit)
