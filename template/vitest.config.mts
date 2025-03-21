@@ -1,12 +1,6 @@
-import { resolve } from 'path'
 import swc from 'unplugin-swc'
 import { defineConfig } from 'vitest/config'
 
-
-const alias = {
-  '@src': resolve(__dirname, './src'),
-  '@test': resolve(__dirname, './test'),
-}
 
 export default defineConfig({
   test: {
@@ -15,7 +9,6 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
     },
-    alias,
   },
   plugins: [
     swc.vite({
@@ -23,7 +16,4 @@ export default defineConfig({
       module: { type: 'es6' },
     }),
   ],
-  resolve: {
-    alias,
-  },
 })

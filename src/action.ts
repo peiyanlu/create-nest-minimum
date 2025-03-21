@@ -143,16 +143,6 @@ export class Action {
           if (useVitest) {
             // renovate: datasource=npm depName=vitest
             const rVersion = '3.0.8'
-            
-            await editFile(jr('tsconfig.json'), (content: string) => {
-              const json = JSON.parse(content)
-              json.compilerOptions.paths = {
-                '@src/*': [ './src/*' ],
-                '@test/*': [ './test/*' ],
-                ...json.compilerOptions.paths,
-              }
-              return JSON.stringify(json, null, 2)
-            })
           }
           
           await editFile(jr('README.md'), content => {
