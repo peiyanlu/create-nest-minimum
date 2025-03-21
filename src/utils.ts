@@ -1,4 +1,4 @@
-import { execSync } from 'child_process'
+import { exec, execSync } from 'child_process'
 import { existsSync } from 'fs'
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { resolve } from 'path'
@@ -69,3 +69,9 @@ export const editFile = async (file: string, callback: (content: string) => stri
   const content = await readFile(file, 'utf-8')
   return writeFile(file, callback(content), 'utf-8')
 }
+
+export const isGitRepo = () => new Promise<boolean>((resolve) => {
+  exec(`git rev-parse --is-inside-work-tree`, (error, stdout) => {
+    resolve(error ? false : JSON.parse(stdout))
+  })
+})

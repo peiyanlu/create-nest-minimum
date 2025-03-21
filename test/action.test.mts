@@ -1,7 +1,8 @@
 import { confirm, select, text } from '@clack/prompts'
 import { mkdirSync } from 'node:fs'
+import { rm } from 'node:fs/promises'
 import { join, resolve } from 'path'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { Action } from '../src/action'
 import { emptyDir } from '../src/utils'
 
@@ -51,8 +52,8 @@ describe('The project name cannot be used as the package name', () => {
     // // 9. Confirm whether you use @nestjs/cli
     // mockedConfirm.mockResolvedValueOnce(true)
     
-    // 10. Confirm whether you use Git
-    mockedConfirm.mockResolvedValueOnce(true)
+    // // 10. Confirm whether you use Git
+    // mockedConfirm.mockResolvedValueOnce(true)
   })
   
   it('should run create action correctly', async () => {
@@ -112,8 +113,8 @@ describe('The project name can be used as the package name', () => {
     // // 9. Confirm whether you use @nestjs/cli
     // mockedConfirm.mockResolvedValueOnce(true)
     
-    // 10. Confirm whether you use Git
-    mockedConfirm.mockResolvedValueOnce(false)
+    // // 10. Confirm whether you use Git
+    // mockedConfirm.mockResolvedValueOnce(false)
   })
   
   it('should run create action correctly', async () => {
@@ -134,7 +135,7 @@ describe('The project name can be used as the package name', () => {
       useVitest: false,
       useSwc: true,
       useCli: true,
-      useGit: false,
+      useGit: true,
     })
   })
 })
@@ -173,8 +174,8 @@ describe('The project directory is not empty', () => {
     // 9. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 10. Confirm whether you use Git
-    mockedConfirm.mockResolvedValueOnce(false)
+    // // 10. Confirm whether you use Git
+    // mockedConfirm.mockResolvedValueOnce(false)
   })
   
   it('should run create action correctly', async () => {
@@ -195,7 +196,7 @@ describe('The project directory is not empty', () => {
       useVitest: false,
       useSwc: false,
       useCli: true,
-      useGit: false,
+      useGit: true,
     })
   })
 })
@@ -234,8 +235,8 @@ describe('The command-line argument overwrite is true', () => {
     // 9. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 10. Confirm whether you use Git
-    mockedConfirm.mockResolvedValueOnce(true)
+    // // 10. Confirm whether you use Git
+    // mockedConfirm.mockResolvedValueOnce(true)
   })
   
   it('should run create action correctly', async () => {
@@ -285,6 +286,10 @@ describe('Exit when the target directory is not empty', () => {
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()
+    
+    onTestFinished(async () => {
+      await rm(join(process.cwd(), projectName), { recursive: true })
+    })
   })
 })
 
@@ -320,8 +325,8 @@ describe('The target directory is the current directory', () => {
     // 9. Confirm whether you use @nestjs/cli
     mockedConfirm.mockResolvedValueOnce(true)
     
-    // 10. Confirm whether you use Git
-    mockedConfirm.mockResolvedValueOnce(false)
+    // // 10. Confirm whether you use Git
+    // mockedConfirm.mockResolvedValueOnce(false)
   })
   
   it('should run create action correctly', async () => {
@@ -342,7 +347,7 @@ describe('The target directory is the current directory', () => {
       useVitest: false,
       useSwc: false,
       useCli: true,
-      useGit: false,
+      useGit: true,
     })
   })
 })

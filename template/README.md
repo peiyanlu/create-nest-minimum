@@ -14,7 +14,7 @@ $ $INSTALL
 
 ```bash
 # development
-$ $RUN build
+$ $RUN start
 
 # watch mode
 $ $RUN start:dev
