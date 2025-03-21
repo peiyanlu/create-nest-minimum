@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.10...0.0.11) (2025-03-21)
+
+### 🔧 Continuous Integration | CI 配置
+
+* cancel the path alias configuration for Vitest ([82c7816](https://github.com/peiyanlu/create-nest-minimum/commit/82c781665596b9b97d43a2f034eff0cb86a7ea4c))
+* update configuration ([98473e9](https://github.com/peiyanlu/create-nest-minimum/commit/98473e93357c8d090cb9f3e444cd21ca256c07d6))
+
 ## [0.0.10](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.9...0.0.10) (2025-03-20)
 
 ### 🐛 Bug Fixes | Bug 修复
