@@ -74,7 +74,7 @@ describe('The project name cannot be used as the package name', () => {
       useVitest: true,
       useSwc: true,
       useCli: true,
-      useGit: true,
+      useGit: false,
     })
   })
 })
@@ -135,7 +135,7 @@ describe('The project name can be used as the package name', () => {
       useVitest: false,
       useSwc: true,
       useCli: true,
-      useGit: true,
+      useGit: false,
     })
   })
 })
@@ -196,7 +196,7 @@ describe('The project directory is not empty', () => {
       useVitest: false,
       useSwc: false,
       useCli: true,
-      useGit: true,
+      useGit: false,
     })
   })
 })
@@ -257,7 +257,7 @@ describe('The command-line argument overwrite is true', () => {
       useVitest: false,
       useSwc: false,
       useCli: true,
-      useGit: true,
+      useGit: false,
     })
   })
 })
@@ -347,7 +347,7 @@ describe('The target directory is the current directory', () => {
       useVitest: false,
       useSwc: false,
       useCli: true,
-      useGit: true,
+      useGit: false,
     })
   })
 })
