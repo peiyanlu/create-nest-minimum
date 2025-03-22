@@ -384,7 +384,7 @@ export class Action {
     assertPrompt(useCli)
     
     // 10. Confirm whether you use Git
-    const useGit = await isGitRepo() || await confirm({
+    const useGit = await isGitRepo() ? false : await confirm({
       message: MESSAGES.GIT_USE_QUESTION,
     }) as boolean
     assertPrompt(useGit)
