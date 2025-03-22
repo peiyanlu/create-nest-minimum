@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.13](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.12...0.0.13) (2025-03-22)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* fix Git repository creation condition logic ([d8b3e51](https://github.com/peiyanlu/create-nest-minimum/commit/d8b3e51a98d84b0c39a5787f42fdb26e3246f817))
+
 ## [0.0.12](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.11...0.0.12) (2025-03-21)
 
 ### ✨ Features | 新功能
