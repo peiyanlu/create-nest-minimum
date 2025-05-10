@@ -1,5 +1,5 @@
 import { cancel, confirm, intro, isCancel, outro, select, tasks, text } from '@clack/prompts'
-import { cyan, grey } from 'ansis'
+import { cyan, gray } from 'ansis'
 import { execSync } from 'child_process'
 import { existsSync, mkdirSync } from 'node:fs'
 import { copyFile, readdir } from 'node:fs/promises'
@@ -229,7 +229,7 @@ export class Action {
     
     let doneMessage = '🎉 Done. Now run:\n'
     const cdProjectName = relative(cwd, root)
-    const prefix = `\n  ${ grey('$') }`
+    const prefix = `\n  ${ gray('$') }`
     if (root !== cwd) {
       const cd = cdProjectName.includes(' ') ? `"${ cdProjectName }"` : cdProjectName
       doneMessage += `${ prefix } ${ cyan('cd') } ${ cd }\n`
