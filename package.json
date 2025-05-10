@@ -56,5 +56,8 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": []
   }
 }
