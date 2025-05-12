@@ -5,8 +5,9 @@ import { existsSync, mkdirSync } from 'node:fs'
 import { copyFile, readdir } from 'node:fs/promises'
 import { basename, join, relative, resolve } from 'node:path'
 import { setTimeout } from 'node:timers/promises'
-import { MESSAGES } from './messages'
+import { MESSAGES } from './messages.js'
 import {
+  __dirname,
   editFile,
   emptyDir,
   execAsync,
@@ -15,7 +16,7 @@ import {
   isValidPackageName,
   toValidPackageName,
   toValidProjectName,
-} from './utils'
+} from './utils.js'
 
 
 export enum PackageManager {
@@ -252,6 +253,20 @@ export class Action {
   }
   
   async handelPrompts(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<PromptsResult> {
+    if (options.all) {
+      return {
+        targetDir: 'nest-minimum-app',
+        packageName: 'nest-minimum-app',
+        description: 'Nest Minimum Application.',
+        pkgManager: PackageManager.NPM,
+        httpLib: HttpLibrary.EXPRESS,
+        useVitest: true,
+        useSwc: true,
+        useCli: true,
+        useGit: true,
+      }
+    }
+    
     // 1. Get project name and target dir
     let targetDir = cmdArgs ? toValidProjectName(cmdArgs) : undefined
     if (!targetDir) {
