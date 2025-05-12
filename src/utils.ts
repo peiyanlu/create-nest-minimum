@@ -1,7 +1,12 @@
 import { exec, execSync } from 'child_process'
-import { existsSync } from 'fs'
+import { existsSync } from 'node:fs'
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises'
-import { resolve } from 'path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+
+export const __filename = fileURLToPath(import.meta.url)
+export const __dirname = dirname(__filename)
 
 
 export const promisify = <T extends (...args: any[]) => any>(fn: T) => (...args: Parameters<T>): Promise<ReturnType<T>> => {

@@ -5,10 +5,10 @@
   "author": "YanluPei",
   "license": "MIT",
   "main": "dist/index.js",
-  "type": "commonjs",
+  "type": "module",
   "bin": {
-    "create-nest-minimum": "index.js",
-    "cnma": "index.js"
+    "create-nest-minimum": "index.cjs",
+    "cnma": "index.cjs"
   },
   "scripts": {
     "dev": "tsc -w",
@@ -43,7 +43,7 @@
   "files": [
     "dist",
     "template",
-    "index.js",
+    "index.cjs",
     "README.md"
   ],
   "repository": {

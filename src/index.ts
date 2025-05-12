@@ -2,10 +2,11 @@ import { red } from 'ansis'
 import { program } from 'commander'
 import { readFileSync } from 'node:fs'
 import { join } from 'path'
-import { Action } from './action'
+import { Action } from './action.js'
+import { __dirname } from './utils.js'
 
 
-const pkg = JSON.parse(readFileSync(join(__dirname, '..', './package.json'), 'utf8'))
+const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'))
 
 program
   .name(pkg.name)
@@ -15,6 +16,7 @@ program
   .argument('[name]')
   .option('-d, --dry-run', 'Report actions that would be performed without writing out results.', false)
   .option('-o, --overwrite', 'When the target directory is not empty, the contents will be overwritten.', false)
+  .option('-a, --all', 'Skip prompts and use default recommended settings.', false)
   .action(async (argName: string, options: Record<string, boolean>) => {
     await new Action().handle(argName, options)
   })
