@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.15](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.14...0.0.15) (2025-05-12)
+
+### 🔧 Continuous Integration | CI 配置
+
+* add --all option to skip all prompts and use recommended config. ([7f9f41f](https://github.com/peiyanlu/create-nest-minimum/commit/7f9f41f6c0ec7bc12184760d7edb810a154d2d03))
+
 ## [0.0.14](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.13...0.0.14) (2025-05-10)
 
 ### 🐛 Bug Fixes | Bug 修复
