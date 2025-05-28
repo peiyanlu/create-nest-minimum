@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.1",
+    "release-it-pnpm": "^4.6.5",
     "@types/node": "^22.15.23",
     "release-it": "^19.0.2",
     "typescript": "^5.8.3",
