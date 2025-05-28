@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.16](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.15...0.0.16) (2025-05-28)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **deps:** update alldependencies ([4aa01b8](https://github.com/peiyanlu/create-nest-minimum/commit/4aa01b871666a97a279cf15b533edaf4d7b7bffd))
+* **deps:** update dependency commander to v14 ([2d07b91](https://github.com/peiyanlu/create-nest-minimum/commit/2d07b91c78b33de4be702f672ce1f99cba3427c5))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** lock file maintenance ([879f552](https://github.com/peiyanlu/create-nest-minimum/commit/879f5526ec48109f341286a580d5484c73a0c1d5))
+
+### 🔧 Continuous Integration | CI 配置
+
+* add workflow scripts. ([b6b47ef](https://github.com/peiyanlu/create-nest-minimum/commit/b6b47efa5a12fbe08e14d37a900ac1d5dcd47361))
+
 ## [0.0.15](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.14...0.0.15) (2025-05-12)
 
 ### 🔧 Continuous Integration | CI 配置
