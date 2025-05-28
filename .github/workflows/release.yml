@@ -5,9 +5,7 @@ on:
     branches:
       - dev
     paths:
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'CHANGELOG.md'
+      - 'template/package.json'
 
 jobs:
   release:
@@ -27,6 +25,11 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10
+      
+      - name: Set Git Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
       
       - name: Install dependencies
         run: pnpm install
