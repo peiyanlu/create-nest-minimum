@@ -5,19 +5,23 @@
     "release": true
   },
   "git": {
-    "commitMessage": "chore(release): v${version}"
-  },
-  "npm": {
-    "skipChecks": true,
-    "tag": "latest"
+    "commit": true,
+    "tag": true,
+    "push": true,
+    "requireCleanWorkingDir": true,
+    "commitMessage": "chore(release): v${version}",
+    "tagName": "v${version}"
   },
   "hooks": {
-    "before:init": "npm config set package-lock false --location=project",
     "before:release": "pnpm run build",
-    "after:bump": "echo update version success",
-    "after:release": "npm config delete package-lock --location=project"
+    "before:init": "echo 'Starting release...'",
+    "after:bump": "echo 'Version bumped'",
+    "after:release": "echo 'Release finished'"
   },
   "plugins": {
+    "release-it-pnpm": {
+      "disableRelease": true
+    },
     "@release-it/conventional-changelog": {
       "infile": "CHANGELOG.md",
       "ignoreRecommendedBump": true,
