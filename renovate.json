@@ -17,7 +17,8 @@
       ],
       "matchUpdateTypes": [
         "patch",
-        "minor"
+        "minor",
+        "bump"
       ],
       "groupName": "allDependencies",
       "automerge": true
@@ -30,7 +31,7 @@
       "matchUpdateTypes": [
         "major"
       ],
-      "groupName": "allDependencies",
+      "groupName": "allDependencies major",
       "automerge": false
     }
   ],
