@@ -6,8 +6,13 @@
   ],
   "automergeType": "pr",
   "timezone": "Asia/Shanghai",
+  "lockFileMaintenance": {
+    "enabled": false
+  },
   "ignorePaths": [
-    "**/test/**"
+    "**/test/**",
+    "**/*-lock.yaml",
+    "**/*-lock.json"
   ],
   "packageRules": [
     {
