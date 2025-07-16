@@ -19,9 +19,6 @@
   ],
   "prConcurrentLimit": 10,
   "prHourlyLimit": 5,
-  "enabledManagers": [
-    "pnpm"
-  ],
   "packageRules": [
     {
       "matchDepTypes": [
