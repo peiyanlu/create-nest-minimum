@@ -7,12 +7,20 @@
   "automergeType": "pr",
   "timezone": "Asia/Shanghai",
   "lockFileMaintenance": {
-    "enabled": false
+    "enabled": false,
+    "schedule": [
+      "before 5am on saturday"
+    ]
   },
   "ignorePaths": [
     "**/test/**",
     "**/*-lock.yaml",
     "**/*-lock.json"
+  ],
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 5,
+  "enabledManagers": [
+    "pnpm"
   ],
   "packageRules": [
     {
@@ -29,6 +37,18 @@
       "automerge": true
     },
     {
+      "matchPackagePatterns": [
+        "^@types/"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "bump"
+      ],
+      "groupName": "DefinitelyTyped packages",
+      "automerge": true
+    },
+    {
       "matchDepTypes": [
         "dependencies",
         "devDependencies"
@@ -36,7 +56,7 @@
       "matchUpdateTypes": [
         "major"
       ],
-      "groupName": "allDependencies major",
+      "groupName": "allDependencies only major",
       "automerge": false
     }
   ],
