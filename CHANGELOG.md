@@ -1,7 +1,5 @@
 # Changelog
 
-## 0.0.1 (2025-07-19)
-
 ## [0.0.16](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.15...0.0.16) (2025-05-28)
 
 ### 🐛 Bug Fixes | Bug 修复
