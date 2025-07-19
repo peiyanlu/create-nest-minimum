@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.1 (2025-07-19)
+
+### 🔧 Continuous Integration | CI 配置
+
+* update release scripts. ([f3cf3ba](https://github.com/peiyanlu/create-nest-minimum/commit/f3cf3ba2661d90c33426fcb9019fa251b963b07c))
+
 ## [0.0.16](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.15...0.0.16) (2025-05-28)
 
 ### 🐛 Bug Fixes | Bug 修复
