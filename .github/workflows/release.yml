@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 # 默认，只获取最后一条提交
+          fetch-tags: 'true'
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
