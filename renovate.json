@@ -5,6 +5,7 @@
     "schedule:weekly",
     "group:allNonMajor"
   ],
+  "automerge": true,
   "automergeType": "pr",
   "automergeStrategy": "rebase",
   "timezone": "Asia/Shanghai",
