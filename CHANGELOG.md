@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.18](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.17...0.0.18) (2025-07-26)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **deps:** update all non-major dependencies ([da34f89](https://github.com/peiyanlu/create-nest-minimum/commit/da34f89bb34fe46fe89458e95e315545122dda57))
+
+### 🔧 Continuous Integration | CI 配置
+
+* update renovate configure. ([5df3d69](https://github.com/peiyanlu/create-nest-minimum/commit/5df3d69b31b087c0cd537a00c02e014f0c2d604f))
+* update renovate configure. ([69b1403](https://github.com/peiyanlu/create-nest-minimum/commit/69b140345e0ad9b60d73cf56fd16eeb0bffada77))
+
 ## [0.0.17](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.16...0.0.17) (2025-07-19)
 
 ### 🐛 Bug Fixes | Bug 修复
