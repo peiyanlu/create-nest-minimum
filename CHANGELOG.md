@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.20](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.19...0.0.20) (2025-08-04)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* revert node version limit. ([b7f1c4f](https://github.com/peiyanlu/create-nest-minimum/commit/b7f1c4ffab97274c78470c485c00793dac9366ab))
+
 ## [0.0.19](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.18...0.0.19) (2025-08-04)
 
 ### 🎫 Chores | 其他更新
