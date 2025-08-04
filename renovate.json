@@ -9,9 +9,7 @@
   "automergeType": "pr",
   "automergeStrategy": "rebase",
   "timezone": "Asia/Shanghai",
-  "labels": [
-    "dependencies"
-  ],
+  "labels": ["dependencies"],
   "ignorePaths": [
     "**/test/**",
     "**/*-lock.yaml",
@@ -22,10 +20,16 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchDepTypes": [
-        "peerDependencies"
-      ],
+      "matchDepTypes": ["peerDependencies"],
       "enabled": false
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "labels": ["devDeps"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "labels": ["major"]
     }
   ],
   "ignoreDeps": [],
