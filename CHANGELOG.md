@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.19](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.18...0.0.19) (2025-08-04)
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update node.js to v22 ([c1bef0a](https://github.com/peiyanlu/create-nest-minimum/commit/c1bef0a57e65b7ce3d395791df6b129d22f95412))
+
+### 🔧 Continuous Integration | CI 配置
+
+* update ci configure. ([e541833](https://github.com/peiyanlu/create-nest-minimum/commit/e541833e45fa518576ab407315a6235fd9a83ac1))
+
 ## [0.0.18](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.17...0.0.18) (2025-07-26)
 
 ### 🐛 Bug Fixes | Bug 修复
