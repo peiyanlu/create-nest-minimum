@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.21](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.20...0.0.21) (2025-08-04)
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update all non-major dependencies ([90e62bc](https://github.com/peiyanlu/create-nest-minimum/commit/90e62bc31173c4d1226a5b2568537654cdb1fc6b))
+
 ## [0.0.20](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.19...0.0.20) (2025-08-04)
 
 ### 🐛 Bug Fixes | Bug 修复
