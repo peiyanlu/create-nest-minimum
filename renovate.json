@@ -20,19 +20,21 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchDepTypes": ["peerDependencies"],
-      "enabled": false
-    },
-    {
       "matchDepTypes": ["devDependencies"],
       "labels": ["devDeps"]
     },
     {
+      "matchDepTypes": ["peerDependencies"],
+      "labels": ["peerDeps"],
+      "enabled": false
+    },
+    {
       "matchUpdateTypes": ["major"],
-      "labels": ["major"]
+      "labels": ["major"],
+      "enabled": false
     }
   ],
-  "ignoreDeps": [],
+  "ignoreDeps": ["node"],
   "customManagers": [
     {
       "customType": "regex",
