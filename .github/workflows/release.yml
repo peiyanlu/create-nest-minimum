@@ -6,6 +6,7 @@ on:
       - dev
     paths: # 推送 dev 并且文件发生变化
       - 'template/package.json'
+  workflow_dispatch:
 
 permissions:
   contents: write
