@@ -59,7 +59,7 @@ describe('The project name cannot be used as the package name', () => {
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = await action.handelPrompts(undefined, { overwrite: false })
+    const res = await action.handlePrompts(undefined, { overwrite: false })
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()
@@ -120,7 +120,7 @@ describe('The project name can be used as the package name', () => {
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = await action.handelPrompts(undefined, { overwrite: false })
+    const res = await action.handlePrompts(undefined, { overwrite: false })
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()
@@ -181,7 +181,7 @@ describe('The project directory is not empty', () => {
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = await action.handelPrompts(undefined, { overwrite: false })
+    const res = await action.handlePrompts(undefined, { overwrite: false })
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()
@@ -242,7 +242,7 @@ describe('The command-line argument overwrite is true', () => {
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = await action.handelPrompts(projectName, { overwrite: true })
+    const res = await action.handlePrompts(projectName, { overwrite: true })
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()
@@ -279,7 +279,7 @@ describe('Exit when the target directory is not empty', () => {
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = action.handelPrompts(undefined, { overwrite: false })
+    const res = action.handlePrompts(undefined, { overwrite: false })
     await expect(res).rejects.toThrow('process.exit unexpectedly called with "0"')
     
     exitSpy.mockRestore()
@@ -332,7 +332,7 @@ describe('The target directory is the current directory', () => {
   it('should run create action correctly', async () => {
     const action = new Action()
     // provide cmdArgs and options, emulate command-line arguments
-    const res = await action.handelPrompts(undefined, { overwrite: false })
+    const res = await action.handlePrompts(undefined, { overwrite: false })
     
     expect(text).toHaveBeenCalled()
     expect(select).toHaveBeenCalled()

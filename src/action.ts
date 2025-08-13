@@ -107,7 +107,7 @@ export class Action {
   public async handle(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<void> {
     intro(cyan('create-nest-minimum-app'))
     
-    const config = await this.handelPrompts(cmdArgs, options)
+    const config = await this.handlePrompts(cmdArgs, options)
     const { targetDir, packageName, description, pkgManager, httpLib, useSwc, useCli, useVitest, useGit } = config
     
     if (options.dryRun) {
@@ -252,7 +252,7 @@ export class Action {
     process.exit(0)
   }
   
-  async handelPrompts(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<PromptsResult> {
+  async handlePrompts(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<PromptsResult> {
     if (options.all) {
       return {
         targetDir: 'nest-minimum-app',
