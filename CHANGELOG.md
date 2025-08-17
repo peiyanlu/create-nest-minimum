@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.25](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.24...0.0.25) (2025-08-17)
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update dependency unplugin-swc to ^1.5.6 ([8b95bb5](https://github.com/peiyanlu/create-nest-minimum/commit/8b95bb531ee38723337932c209c9c62a62b99f7a))
+
 ## [0.0.24](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.23...0.0.24) (2025-08-15)
 
 ### 🐛 Bug Fixes | Bug 修复
