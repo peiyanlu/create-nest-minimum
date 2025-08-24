@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.28](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.27...0.0.28) (2025-08-24)
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update dependency @swc/core to ^1.13.5 ([d4a803d](https://github.com/peiyanlu/create-nest-minimum/commit/d4a803d1b1d53338f60b4302a5febdc0a839a5dd))
+
 ## [0.0.27](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.26...0.0.27) (2025-08-23)
 
 ### 🎫 Chores | 其他更新
