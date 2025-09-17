@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.33](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.32...0.0.33) (2025-09-17)
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update dependency @types/node to ^22.18.5 ([4a1bba8](https://github.com/peiyanlu/create-nest-minimum/commit/4a1bba8c999fda636f166097cdc8c972495890c3))
+
 ## [0.0.32](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.31...0.0.32) (2025-09-16)
 
 ### 🎫 Chores | 其他更新
