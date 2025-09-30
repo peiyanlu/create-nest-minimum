@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.37](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.36...0.0.37) (2025-09-30)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **deps:** update dependency ansis to ^4.2.0 ([5fdb357](https://github.com/peiyanlu/create-nest-minimum/commit/5fdb35733c5133074ba7778da48b59bea99f5da9))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update dependency @types/node to ^22.18.7 ([eefcc7b](https://github.com/peiyanlu/create-nest-minimum/commit/eefcc7bf73f521ee364cd9a3a3ca18e6cfc7ff5a))
+
 ## [0.0.36](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.35...0.0.36) (2025-09-27)
 
 ### 🎫 Chores | 其他更新
