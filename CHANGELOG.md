@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.40](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.39...0.0.40) (2025-10-11)
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update dependency @types/node to ^22.18.10 ([f824f5a](https://github.com/peiyanlu/create-nest-minimum/commit/f824f5af018e8a5428d62dd8a3db2aa79620f6a6))
+* **deps:** update dependency pnpm to v10.18.2 ([14d256e](https://github.com/peiyanlu/create-nest-minimum/commit/14d256e8c6389d349e5c0dd159044c2dea26d2ff))
+
 ## [0.0.39](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.38...0.0.39) (2025-10-09)
 
 ### 🎫 Chores | 其他更新
