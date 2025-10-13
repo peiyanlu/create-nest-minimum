@@ -12,24 +12,81 @@ permissions:
   contents: write
 
 jobs:
+  check:
+    name: Check Dependencies Change
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+      changed_list: ${{ steps.check.outputs.changed_list }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@latest
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@latest
+        with:
+          node-version: 22
+      
+      - name: Detect dependencies version change
+        id: check
+        run: |
+          # 检测的依赖列表（空格分隔）
+          DEPS=("@nestjs/core" "@nestjs/common" "@nestjs/platform-express")
+          
+          changed_any=false
+          changed_list=()
+          
+          for dep in "${DEPS[@]}"; do
+            # 读取旧版本（优先 dependencies，其次 devDependencies）
+            old_version=$(git show HEAD^:package.json | jq -r --arg dep "$dep" '.dependencies[$dep] // .devDependencies[$dep] // empty')
+            # 读取新版本
+            new_version=$(jq -r --arg dep "$dep" '.dependencies[$dep] // .devDependencies[$dep] // empty' package.json)
+          
+            echo "Checking $dep..."
+            echo "Old: $old_version"
+            echo "New: $new_version"
+          
+            if [ "$old_version" != "$new_version" ]; then
+              echo "➡ $dep version changed!"
+              changed_any=true
+              changed_list+=("$dep")
+            fi
+          done
+          
+          # 输出总体变化标记
+          echo "changed=$changed_any" >> $GITHUB_OUTPUT
+          # 输出变化的依赖列表（用逗号拼接）
+          changed_list_str=$(IFS=,; echo "${changed_list[*]}")
+          echo "changed_list=$changed_list_str" >> $GITHUB_OUTPUT
+          
+          # 输出到日志
+          echo "Changed dependencies: ${changed_list[*]}"
+  
+  
   release:
+    name: Release NPM Package
+    needs: check
+    if: needs.check.outputs.changed == 'true'
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@latest
         with:
           fetch-depth: 0
           fetch-tags: 'true'
       
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@latest
         with:
           node-version: 22
           registry-url: 'https://registry.npmjs.org/'
       
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@latest
         with:
           version: 10.18.2
       
