@@ -25,9 +25,9 @@
     "commander": "^14.0.2"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^10.0.1",
+    "@release-it/conventional-changelog": "^10.0.2",
     "release-it-pnpm": "^4.6.6",
-    "@types/node": "^22.19.0",
+    "@types/node": "^22.19.1",
     "release-it": "^19.0.6",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
