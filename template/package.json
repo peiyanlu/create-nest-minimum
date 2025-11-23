@@ -20,17 +20,17 @@
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
-    "@nestjs/cli": "^11.0.10",
+    "@nestjs/cli": "^11.0.12",
     "@nestjs/testing": "^11.1.9",
     "@swc/cli": "^0.7.9",
-    "@swc/core": "^1.15.2",
+    "@swc/core": "^1.15.3",
     "@types/node": "^22.19.1",
     "@types/supertest": "^6.0.3",
-    "@vitest/coverage-v8": "^4.0.10",
+    "@vitest/coverage-v8": "^4.0.13",
     "supertest": "^7.1.4",
     "typescript": "^5.9.3",
     "unplugin-swc": "^1.5.8",
-    "vitest": "^4.0.10"
+    "vitest": "^4.0.13"
   },
   "engines": {
     "node": ">=20"
