@@ -116,17 +116,18 @@ export class Action {
     }
     
     const cwd: string = process.cwd()
-    const root = join(cwd, targetDir)
+    const target = join(cwd, targetDir)
     
     await tasks([
       {
         title: MESSAGES.PROJECT_INFORMATION_START,
         task: async () => {
-          const jr = (p: string) => join(root, p)
+          const jr = (p: string) => join(target, p)
           
           // -----------------------------------------------------
           const templateDir = resolve(__dirname, '..', 'template')
-          await copyDirAsync(templateDir, root, config)
+          await copyDirAsync(templateDir, target, config)
+          
           if (useSwc || useVitest) {
             await editFile(jr('nest-cli.json'), (content: string) => {
               const json = JSON.parse(content)
@@ -228,10 +229,10 @@ export class Action {
       },
     ])
     
-    let doneMessage = '🎉 Done. Now run:\n'
-    const cdProjectName = relative(cwd, root)
+    let doneMessage = '🎉  Done. Now run:\n'
+    const cdProjectName = relative(cwd, target)
     const prefix = `\n  ${ gray('$') }`
-    if (root !== cwd) {
+    if (target !== cwd) {
       const cd = cdProjectName.includes(' ') ? `"${ cdProjectName }"` : cdProjectName
       doneMessage += `${ prefix } ${ cyan('cd') } ${ cd }\n`
     }
@@ -316,9 +317,9 @@ export class Action {
     let packageName = basename(resolve(targetDir))
     if (!isValidPackageName(packageName)) {
       const packageNameResult = await text({
-        message: MESSAGES.PACKAGE_MANAGER_QUESTION,
-        defaultValue: toValidPackageName(packageName),
-        placeholder: toValidPackageName(packageName),
+        message: MESSAGES.PACKAGE_NAME_QUESTION,
+        initialValue: toValidPackageName(packageName),
+        placeholder: 'Anonymous',
         validate(val) {
           if (!isValidPackageName(val)) {
             return 'Invalid package.json name'

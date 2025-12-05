@@ -55,10 +55,10 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "src\/index\\.ts$"
+        "src/.*\\.ts$"
       ],
       "matchStrings": [
-        "\/\/\\s*renovate:\\s+datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+(?:var|let|const)\\s+\\S+\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']"
+        "//\\s*renovate:\\s+datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+(?:var|let|const)\\s+\\S+\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']"
       ]
     }
   ]

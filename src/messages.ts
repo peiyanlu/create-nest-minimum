@@ -3,7 +3,8 @@ import { green, rgb, yellow } from 'ansis'
 
 export const MESSAGES = {
   PROJECT_NAME_QUESTION: 'Project name:',
-  PACKAGE_MANAGER_QUESTION: `Select package manager:`,
+  PACKAGE_NAME_QUESTION: 'Package name:',
+  PACKAGE_MANAGER_QUESTION: 'Select package manager:',
   PACKAGE_DESCRIPTION_QUESTION: 'Project description:',
   GIT_USE_QUESTION: `Create ${ rgb(225, 92, 54)`Git` } repository?`,
   VITEST_USE_QUESTION: `Use ${ rgb(179, 209, 117)('Vitest') } as testing framework?`,
