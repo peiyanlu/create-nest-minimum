@@ -124,6 +124,8 @@ export class Action {
         task: async () => {
           const jr = (p: string) => join(target, p)
           
+          const isYarn = pkgManager === PackageManager.YARN
+          
           // -----------------------------------------------------
           const templateDir = resolve(__dirname, '..', 'template')
           await copyDirAsync(templateDir, target, config)
@@ -143,13 +145,7 @@ export class Action {
             })
           }
           
-          if (useVitest) {
-            // renovate: datasource=npm depName=vitest
-            const rVersion = '3.0.8'
-          }
-          
           await editFile(jr('README.md'), content => {
-            const isYarn = pkgManager === PackageManager.YARN
             return content
               .replace(/\$PACKAGE_NAME/g, packageName)
               .replace(/\$DESCRIPTION/g, description)
@@ -163,65 +159,62 @@ export class Action {
           process.chdir(targetDir)
           
           // -----------------------------------------------------
-          const vitest = [
-            'vitest',
-            '@vitest/coverage-v8',
-            'unplugin-swc',
-            '@nestjs/testing',
-            'supertest',
-            '@types/supertest',
-          ]
+          const scripts: Record<string, string> = {}
+          const deps = [ `@nestjs/platform-${ reverseFiles[httpLib] }` ]
+          
           const swcDeps = [ '@swc/cli', '@swc/core' ]
           const cli = [ '@nestjs/cli' ]
-          
           const devDeps = (useSwc || useVitest)
             ? []
             : useCli
               ? swcDeps
               : [ ...swcDeps, ...cli ]
           
+          // -----------------------------------------------------
           if (!useVitest) {
+            const vitest = [
+              'vitest',
+              '@vitest/coverage-v8',
+              'unplugin-swc',
+              '@nestjs/testing',
+              'supertest',
+              '@types/supertest',
+            ]
             devDeps.push(...vitest)
           }
-          
-          const del = [ `@nestjs/platform-${ reverseFiles[httpLib] }` ]
-            .map(k => `dependencies[${ k }]`)
-            .concat((devDeps).map(k => `devDependencies[${ k }]`))
-            .join(' ')
-          const cmdArr = [
-            `npm pkg set name="${ packageName }" description="${ description }"`,
-            `npm pkg delete ${ del }`,
-          ]
-          for (const cmd of cmdArr) {
-            await execAsync(cmd)
-          }
-          
-          // -----------------------------------------------------
           if (useVitest) {
-            const temp = Object.entries({
+            Object.assign(scripts, {
               test: 'vitest',
               'test:e2e': 'vitest run -c ./vitest.config.e2e.mts',
               'test:cov': 'vitest run --coverage',
-            }).map(([ k, v ]) => {
-              return `scripts.${ k }="${ v }" `
             })
-            const cmdArr = [
-              `npm pkg set ${ temp.join(' ') }`,
-            ]
-            for (const cmd of cmdArr) {
-              await execAsync(cmd)
-            }
+            
+            // renovate: datasource=npm depName=vitest
+            const rVersion = '3.0.8'
           }
           
           // -----------------------------------------------------
+          const del = deps.map(k => `dependencies[${ k }]`)
+            .concat(devDeps.map(k => `devDependencies[${ k }]`))
+            .join(' ')
+          const add = Object.entries(scripts)
+            .map(([ k, v ]) => `scripts.${ k }="${ v }"`)
+            .join(' ')
+          const cmdArr = [
+            `npm pkg set name="${ packageName }" description="${ description }"`,
+          ]
+          if (del) cmdArr.push(`npm pkg delete ${ del }`)
+          if (add) cmdArr.push(`npm pkg set ${ add }`)
           if (useGit) {
             const git = [
               'git init',
               'git branch -M master',
             ]
-            for (const cmd of git) {
-              await execAsync(cmd)
-            }
+            cmdArr.push(...git)
+          }
+          
+          for (const cmd of cmdArr) {
+            await execAsync(cmd)
           }
           
           return MESSAGES.PROJECT_INFORMATION_END

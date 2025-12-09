@@ -71,6 +71,7 @@ export const isEmpty = async (path: string, ignore: string[]) => {
 }
 
 export const editFile = async (file: string, callback: (content: string) => string) => {
+  if (!existsSync(file)) return
   const content = await readFile(file, 'utf-8')
   return writeFile(file, callback(content), 'utf-8')
 }
