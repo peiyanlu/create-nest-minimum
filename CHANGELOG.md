@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.0.41](///compare/0.0.4...0.0.41) (2025-12-09)
+
+### Features
+
+* add automatic detection for Git repository c76d8c7
+* add SWC options 9aa5106
+* add Vitest options 48f1255
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies a7f21aa
+* **deps:** update all non-major dependencies 5edc2fc
+* **deps:** update all non-major dependencies 969885e
+* **deps:** update all non-major dependencies 3bc01d2
+* **deps:** update all non-major dependencies 9ff1657
+* **deps:** update all non-major dependencies 87a736a
+* **deps:** update all non-major dependencies to ^11.1.6 e507647
+* **deps:** update alldependencies c1bff45
+* **deps:** update alldependencies c6dc2a8
+* **deps:** update alldependencies 950e920
+* **deps:** update alldependencies 605fe83
+* **deps:** update alldependencies 91aabee
+* **deps:** update dependency ansis to ^4.2.0 ff692f4
+* **deps:** update dependency commander to v14 7fa3473
+* fix Git repository creation condition logic 3bcbc3f
+* fix message description. c22d242
+* fix release scripts configure. 2b9cbcb
+* fix renovate configure. 9460edf
+* fix spelling mistakes. efa70ca
+* fixed SWC configuration errors c6b2c71
+* revert node version limit. 1f9a86a
+
+### Reverts
+
+* rollback Node.js version in package.json b7c9cdb
+
 ## [0.0.40](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.39...0.0.40) (2025-10-11)
 
 ### 🎫 Chores | 其他更新
