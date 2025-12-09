@@ -28,7 +28,7 @@ jobs:
       - name: Detect
         id: detect
         run: |
-          DEPS=("xxxDeps" "yyyDeps" "zzzDeps")
+          DEPS=("@nestjs/core" "@nestjs/common" "@nestjs/platform-express")
           
           changed_list=()
           
