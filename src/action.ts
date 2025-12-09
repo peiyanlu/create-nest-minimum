@@ -312,7 +312,7 @@ export class Action {
       const packageNameResult = await text({
         message: MESSAGES.PACKAGE_NAME_QUESTION,
         initialValue: toValidPackageName(packageName),
-        placeholder: 'Anonymous',
+        placeholder: toValidPackageName(packageName),
         validate(val) {
           if (!isValidPackageName(val)) {
             return 'Invalid package.json name'

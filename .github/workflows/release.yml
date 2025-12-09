@@ -1,107 +1,54 @@
-name: Release NPM Package
+name: Release
 
 on:
-  push:
-    branches:
-      - dev
-    paths: # 推送 dev 并且文件发生变化
-      - 'template/package.json'
+  workflow_run:
+    workflows: [ "Detect Deps" ]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
-  check:
-    name: Check Dependencies Change
-    runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.check.outputs.changed }}
-      changed_list: ${{ steps.check.outputs.changed_list }}
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.11.1
-      
-      - name: Detect dependencies version change
-        id: check
-        run: |
-          # 检测的依赖列表（空格分隔）
-          DEPS=("@nestjs/core" "@nestjs/common" "@nestjs/platform-express")
-          
-          changed_any=false
-          changed_list=()
-          
-          for dep in "${DEPS[@]}"; do
-            # 读取旧版本（优先 dependencies，其次 devDependencies）
-            old_version=$(git show HEAD^:package.json | jq -r --arg dep "$dep" '.dependencies[$dep] // .devDependencies[$dep] // empty')
-            # 读取新版本
-            new_version=$(jq -r --arg dep "$dep" '.dependencies[$dep] // .devDependencies[$dep] // empty' package.json)
-          
-            echo "Checking $dep..."
-            echo "Old: $old_version"
-            echo "New: $new_version"
-          
-            if [ "$old_version" != "$new_version" ]; then
-              echo "➡ $dep version changed!"
-              changed_any=true
-              changed_list+=("$dep")
-            fi
-          done
-          
-          # 输出总体变化标记
-          echo "changed=$changed_any" >> $GITHUB_OUTPUT
-          # 输出变化的依赖列表（用逗号拼接）
-          changed_list_str=$(IFS=,; echo "${changed_list[*]}")
-          echo "changed_list=$changed_list_str" >> $GITHUB_OUTPUT
-          
-          # 输出到日志
-          echo "Changed dependencies: ${changed_list[*]}"
-  
-  
   release:
-    name: Release NPM Package
-    needs: check
-    if: needs.check.outputs.changed == 'true'
+    name: Release
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          fetch-tags: 'true'
+          fetch-tags: true
+          ref: ${{ github.ref }}
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.11.1
-          registry-url: 'https://registry.npmjs.org/'
-      
-      - name: Setup pnpm
+      - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.24.0
+      
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.11.1
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
       
       - name: Set Git Identity
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
       
-      - name: Install dependencies
-        run: pnpm install
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
       
-      - name: Build project
+      - name: Build
         run: pnpm build
       
-      - name: Release with release-it
+      - name: Release
         run: pnpm exec release-it --ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

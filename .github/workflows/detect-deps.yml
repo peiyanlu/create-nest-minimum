@@ -1,0 +1,57 @@
+name: Detect Deps
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'template/package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ github.ref }}
+      
+      - name: Detect
+        id: detect
+        run: |
+          DEPS=("xxxDeps" "yyyDeps" "zzzDeps")
+          
+          changed_list=()
+          
+          for dep in "${DEPS[@]}"; do
+            old_version=$(git show HEAD^:package.json | jq -r --arg dep "$dep" '.dependencies[$dep] // .devDependencies[$dep] // empty')
+            new_version=$(jq -r --arg dep "$dep" '.dependencies[$dep] // .devDependencies[$dep] // empty' package.json)
+          
+            echo "Checking $dep..."
+            echo "Old: $old_version"
+            echo "New: $new_version"
+          
+            if [ "$old_version" != "$new_version" ]; then
+              echo "➡ $dep version changed!"
+              changed_list+=("$dep")
+            fi
+          done
+          
+          echo "Changed dependencies: ${changed_list[*]}"
+          
+          if [ ${#changed_list[@]} -eq 0 ]; then
+            echo "No dependencies changed. Stopping workflow."
+            exit 1  # failure
+          else
+            echo "Dependencies changed. Starting next workflow."
+            exit 0  # success
+          fi
