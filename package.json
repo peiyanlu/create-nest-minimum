@@ -25,10 +25,10 @@
     "commander": "^14.0.2"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^10.0.2",
+    "@release-it/conventional-changelog": "^10.0.3",
     "release-it-pnpm": "^4.6.6",
-    "@types/node": "^24.10.1",
-    "release-it": "^19.0.6",
+    "@types/node": "^24.10.4",
+    "release-it": "^19.1.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.15"
   },
