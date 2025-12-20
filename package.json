@@ -11,18 +11,19 @@
     "cnma": "index.cjs"
   },
   "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest",
-    "prepack": "tsc",
-    "prepublish": "tsc",
+    "dev": "tsdown -w",
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:e2e": "vitest run -c vitest.config.e2e.mts",
+    "test:cov": "vitest run --coverage",
+    "prepublish": "tsdown",
     "release": "release-it"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "ansis": "^4.2.0",
-    "commander": "^14.0.2"
+    "commander": "^14.0.2",
+    "@peiyanlu/cli-tools": "^0.0.1"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.2",
@@ -30,7 +31,9 @@
     "@types/node": "^24.10.1",
     "release-it": "^19.0.6",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.15"
+    "vitest": "^4.0.15",
+    "tsdown": "^0.18.1",
+    "@vitest/coverage-v8": "^4.0.15"
   },
   "private": false,
   "engines": {
@@ -43,22 +46,17 @@
   ],
   "files": [
     "dist",
-    "template",
-    "index.cjs",
-    "README.md"
+    "template"
   ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:peiyanlu/create-nest-minimum.git"
   },
-  "homepage": "https://github.com/peiyanlu/create-nest-minimum",
+  "homepage": "https://github.com/peiyanlu/create-nest-minimum#readme",
   "bugs": {
     "url": "https://github.com/peiyanlu/create-nest-minimum/issues"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
-  },
-  "pnpm": {
-    "neverBuiltDependencies": []
   }
 }

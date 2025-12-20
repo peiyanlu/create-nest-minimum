@@ -7,7 +7,18 @@
   },
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [],
+    "assets": [
+      {
+        "include": "static",
+        "outDir": "dist",
+        "watchAssets": true
+      },
+      {
+        "include": "config/.env",
+        "outDir": "dist",
+        "watchAssets": true
+      }
+    ],
     "tsConfigPath": "./tsconfig.build.json"
   }
 }

@@ -1,19 +1,15 @@
-import swc from 'unplugin-swc'
-import { defineConfig } from 'vitest/config'
+import { defineConfig, mergeConfig } from 'vitest/config'
+import baseConfig from './vitest.config.base.mjs'
 
 
-export default defineConfig({
-  test: {
-    globals: true,
-    root: './',
-    coverage: {
-      provider: 'v8',
+export default mergeConfig(
+  baseConfig,
+  defineConfig({
+    test: {
+      include: [ '**/test/**/*.{test,spec}.{ts,mts}' ],
+      coverage: {
+        provider: 'v8',
+      },
     },
-  },
-  plugins: [
-    swc.vite({
-      // Explicitly set the module type to avoid inheriting this value from a `.swcrc` config file.
-      module: { type: 'es6' },
-    }),
-  ],
-})
+  }),
+)

@@ -1,46 +1,38 @@
 import { cancel, confirm, intro, isCancel, outro, select, tasks, text } from '@clack/prompts'
-import { cyan, gray } from 'ansis'
-import { execSync } from 'child_process'
-import { existsSync, mkdirSync } from 'node:fs'
-import { copyFile, readdir } from 'node:fs/promises'
-import { basename, join, relative, resolve } from 'node:path'
-import { setTimeout } from 'node:timers/promises'
-import { MESSAGES } from './messages.js'
 import {
-  __dirname,
+  checkVersion,
+  copyDirAsync,
   editFile,
+  editJsonFile,
   emptyDir,
   execAsync,
   isEmpty,
   isGitRepo,
   isValidPackageName,
+  PkgManager,
   toValidPackageName,
   toValidProjectName,
-} from './utils.js'
+  YesOrNo,
+} from '@peiyanlu/cli-tools'
+import { cyan, gray } from 'ansis'
+import { existsSync } from 'node:fs'
+import { basename, relative, resolve } from 'node:path'
+import { scheduler } from 'node:timers/promises'
+import { Context } from './context.js'
+import { MESSAGES } from './messages.js'
+import { __dirname } from './utils.js'
 
-
-export enum PackageManager {
-  NPM = 'npm',
-  YARN = 'yarn',
-  PNPM = 'pnpm',
-}
 
 export enum HttpLibrary {
   EXPRESS = 'express',
   FASTIFY = 'fastify',
 }
 
-export enum YesOrNo {
-  Yes = 'yes',
-  No = 'no',
-  Null = 'null',
-}
-
 export interface PromptsResult {
   targetDir: string;
   packageName: string;
   description: string;
-  pkgManager: PackageManager;
+  pkgManager: PkgManager;
   httpLib: HttpLibrary;
   useVitest: boolean;
   useSwc: boolean;
@@ -48,19 +40,15 @@ export interface PromptsResult {
   useGit: boolean;
 }
 
-const renameFiles: Record<string, string | undefined> = {
+
+const renameFiles: Record<string, string> = {
   _gitignore: '.gitignore',
   [`${ HttpLibrary.EXPRESS }.ts`]: 'main.ts',
   [`${ HttpLibrary.FASTIFY }.ts`]: 'main.ts',
 }
 
-const vitestFiles: string[] = [
-  'app.controller.spec.ts',
-  'test',
-  'app.e2e-spec.ts',
-  'vitest.config.mts',
-  'vitest.config.e2e.mts',
-  'vitest-globals.d.ts',
+const pnpmFiles: string[] = [
+  'pnpm-workspace.yaml',
 ]
 
 const reverseFiles = {
@@ -69,44 +57,69 @@ const reverseFiles = {
 }
 
 
-const copyDirAsync = async (source: string, target: string, opts: PromptsResult) => {
-  mkdirSync(target, { recursive: true })
-  const entries = await readdir(source, { withFileTypes: true })
-  for (const entry of entries) {
-    const { httpLib, useVitest } = opts
-    const name = entry.name
-    const isDir = entry.isDirectory()
-    
-    if (!isDir && name === `${ reverseFiles[httpLib] }.ts`) {
-      continue
-    }
-    
-    if (!useVitest && vitestFiles.includes(name)) {
-      continue
-    }
-    
-    const srcPath = join(source, name)
-    const destPath = join(target, !isDir ? (renameFiles[name] ?? name) : name)
-    if (isDir) {
-      await copyDirAsync(srcPath, destPath, opts)
-    } else {
-      await copyFile(srcPath, destPath)
-    }
-  }
-}
-
 const assertPrompt = (value: unknown) => {
   if (isCancel(value)) {
-    cancel('Operation cancelled')
+    cancel(MESSAGES.OPERATION_ABORTED)
     process.exit(0)
   }
 }
 
+const handleDirConflict = async (targetDir: string, options: Record<string, boolean>): Promise<void> => {
+  const isExists = existsSync(targetDir)
+  const ignore = [ '.git', '.idea', '.vscode' ]
+  if (isExists && !await isEmpty(targetDir, ignore)) {
+    const overwrite = options.overwrite
+      ? YesOrNo.Yes
+      : await select({
+        message: MESSAGES.DIRECTORY_CONFLICT_QUESTION(targetDir),
+        options: [
+          {
+            label: 'Cancel',
+            value: YesOrNo.No,
+            hint: 'cancel and exit',
+          },
+          {
+            label: 'Remove',
+            value: YesOrNo.Yes,
+            hint: 'remove files and continue',
+          },
+          {
+            label: 'Ignore',
+            value: YesOrNo.Ignore,
+            hint: 'ignore files and continue',
+          },
+        ],
+      })
+    assertPrompt(overwrite)
+    switch (overwrite) {
+      case YesOrNo.Yes:
+        await emptyDir(targetDir, ignore)
+        break
+      case YesOrNo.No:
+        outro(MESSAGES.OPERATION_ABORTED)
+        process.exit(0)
+    }
+  }
+}
+
+const defaultProjectName = 'nest-minimum-app'
+export const createDefaultConfig = (): PromptsResult => ({
+  targetDir: defaultProjectName,
+  packageName: defaultProjectName,
+  description: 'Nest Minimum Application.',
+  pkgManager: PkgManager.NPM,
+  httpLib: HttpLibrary.EXPRESS,
+  useVitest: true,
+  useSwc: true,
+  useCli: true,
+  useGit: true,
+})
 
 export class Action {
   public async handle(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<void> {
     intro(cyan('create-nest-minimum-app'))
     
+    const ctx = new Context(createDefaultConfig())
     const config = await this.handlePrompts(cmdArgs, options)
     const { targetDir, packageName, description, pkgManager, httpLib, useSwc, useCli, useVitest, useGit } = config
     
@@ -116,23 +129,42 @@ export class Action {
     }
     
     const cwd: string = process.cwd()
-    const target = join(cwd, targetDir)
+    const source = resolve(__dirname, '..', 'template')
+    const target = resolve(cwd, targetDir)
+    
+    const isPnpm = pkgManager === PkgManager.PNPM
+    const mustSwc = useSwc || useVitest
     
     await tasks([
       {
         title: MESSAGES.PROJECT_INFORMATION_START,
         task: async () => {
-          const jr = (p: string) => join(target, p)
-          
-          const isYarn = pkgManager === PackageManager.YARN
+          await copyDirAsync(source, target, {
+            rename: { ...renameFiles },
+            skips: [
+              // Framework
+              (name, isDir) => !isDir && name === `${ reverseFiles[httpLib] }.ts`,
+              
+              // Vitest
+              (name: string) => !useVitest && [
+                /(^|[\\/])(test|tests|__tests__|e2e)([\\/]|$)/,
+                /\.(e2e-)?(test|spec)\.m?(ts|js)$/,
+                /^vitest([-|.])(.*)\.m?(ts|js)$/,
+              ].some(reg => reg.test(name)),
+              
+              // pnpm
+              (name: string) => !isPnpm && pnpmFiles.includes(name),
+            ],
+          })
+          await scheduler.yield()
           
           // -----------------------------------------------------
-          const templateDir = resolve(__dirname, '..', 'template')
-          await copyDirAsync(templateDir, target, config)
+          process.chdir(targetDir)
+          await scheduler.yield()
           
-          if (useSwc || useVitest) {
-            await editFile(jr('nest-cli.json'), (content: string) => {
-              const json = JSON.parse(content)
+          // -----------------------------------------------------
+          if (mustSwc) {
+            await editJsonFile('./nest-cli.json', (json) => {
               json.generateOptions.spec = useVitest
               if (useSwc) {
                 json.compilerOptions = {
@@ -141,51 +173,47 @@ export class Action {
                   ...json.compilerOptions,
                 }
               }
-              return JSON.stringify(json, null, 2)
             })
           }
-          
-          await editFile(jr('README.md'), content => {
+          await editFile('./README.md', content => {
+            const isYarn = pkgManager === PkgManager.YARN
             return content
               .replace(/\$PACKAGE_NAME/g, packageName)
               .replace(/\$DESCRIPTION/g, description)
-              .replace(/\$INSTALL/g, isYarn ? 'yarn' : `${ pkgManager } install`)
-              .replace(/\$RUN/g, isYarn ? 'yarn' : `${ pkgManager } run`)
+              .replace(/\$INSTALL/g, isYarn ? PkgManager.YARN : `${ pkgManager } install`)
+              .replace(/\$RUN/g, isYarn ? PkgManager.YARN : `${ pkgManager } run`)
               .replace(/\$START([\s\S]*?)\$END/g, (_, $1) => useVitest ? $1 : '')
               .replace(/(\r?\n){3,}/g, '\r\n'.repeat(2))
           })
           
-          // -----------------------------------------------------
-          process.chdir(targetDir)
+          await scheduler.yield()
           
           // -----------------------------------------------------
-          const scripts: Record<string, string> = {}
-          const deps = [ `@nestjs/platform-${ reverseFiles[httpLib] }` ]
+          ctx.removeDeps([ `@nestjs/platform-${ reverseFiles[httpLib] }` ])
           
           const swcDeps = [ '@swc/cli', '@swc/core' ]
-          const cli = [ '@nestjs/cli' ]
-          const devDeps = (useSwc || useVitest)
+          const cliDeps = [ '@nestjs/cli' ]
+          ctx.removeDevDeps(mustSwc
             ? []
             : useCli
               ? swcDeps
-              : [ ...swcDeps, ...cli ]
+              : [ ...swcDeps, ...cliDeps ])
           
           // -----------------------------------------------------
           if (!useVitest) {
-            const vitest = [
+            ctx.removeDevDeps([
               'vitest',
               '@vitest/coverage-v8',
               'unplugin-swc',
               '@nestjs/testing',
               'supertest',
               '@types/supertest',
-            ]
-            devDeps.push(...vitest)
+            ])
           }
           if (useVitest) {
-            Object.assign(scripts, {
-              test: 'vitest',
-              'test:e2e': 'vitest run -c ./vitest.config.e2e.mts',
+            ctx.setScripts({
+              'test': 'vitest run',
+              'test:e2e': 'vitest run -c vitest.config.e2e.mts',
               'test:cov': 'vitest run --coverage',
             })
             
@@ -194,17 +222,11 @@ export class Action {
           }
           
           // -----------------------------------------------------
-          const del = deps.map(k => `dependencies[${ k }]`)
-            .concat(devDeps.map(k => `devDependencies[${ k }]`))
-            .join(' ')
-          const add = Object.entries(scripts)
-            .map(([ k, v ]) => `scripts.${ k }="${ v }"`)
-            .join(' ')
+          await ctx.applyChanges()
+          
           const cmdArr = [
             `npm pkg set name="${ packageName }" description="${ description }"`,
           ]
-          if (del) cmdArr.push(`npm pkg delete ${ del }`)
-          if (add) cmdArr.push(`npm pkg set ${ add }`)
           if (useGit) {
             const git = [
               'git init',
@@ -215,6 +237,7 @@ export class Action {
           
           for (const cmd of cmdArr) {
             await execAsync(cmd)
+            await scheduler.yield()
           }
           
           return MESSAGES.PROJECT_INFORMATION_END
@@ -226,11 +249,11 @@ export class Action {
     const cdProjectName = relative(cwd, target)
     const prefix = `\n  ${ gray('$') }`
     if (target !== cwd) {
-      const cd = cdProjectName.includes(' ') ? `"${ cdProjectName }"` : cdProjectName
-      doneMessage += `${ prefix } ${ cyan('cd') } ${ cd }\n`
+      const dir = cdProjectName.includes(' ') ? `"${ cdProjectName }"` : cdProjectName
+      doneMessage += `${ prefix } ${ cyan('cd') } ${ dir }\n`
     }
     switch (pkgManager) {
-      case PackageManager.YARN:
+      case PkgManager.YARN:
         doneMessage += `${ prefix } yarn`
         doneMessage += `${ prefix } yarn start`
         break
@@ -242,86 +265,46 @@ export class Action {
     
     outro(doneMessage)
     
-    await setTimeout(1000)
     process.exit(0)
   }
   
   async handlePrompts(cmdArgs: string | undefined, options: Record<string, boolean>): Promise<PromptsResult> {
     if (options.all) {
-      return {
-        targetDir: 'nest-minimum-app',
-        packageName: 'nest-minimum-app',
-        description: 'Nest Minimum Application.',
-        pkgManager: PackageManager.NPM,
-        httpLib: HttpLibrary.EXPRESS,
-        useVitest: true,
-        useSwc: true,
-        useCli: true,
-        useGit: true,
-      }
+      await handleDirConflict(defaultProjectName, options)
+      
+      return createDefaultConfig()
     }
     
     // 1. Get project name and target dir
-    let targetDir = cmdArgs ? toValidProjectName(cmdArgs) : undefined
-    if (!targetDir) {
-      const projectNameResult = await text({
+    const prjName = cmdArgs ? toValidProjectName(cmdArgs) : undefined
+    const projectName = prjName
+      ? prjName
+      : await text({
         message: MESSAGES.PROJECT_NAME_QUESTION,
         placeholder: 'Anonymous',
         defaultValue: 'nest-minimum-app',
       }) as string
-      assertPrompt(projectNameResult)
-      targetDir = toValidProjectName(projectNameResult)
-    }
+    assertPrompt(projectName)
+    const targetDir = toValidProjectName(projectName)
     
     // 2. Handle directory if exist and not empty
-    const isExists = existsSync(targetDir)
-    const ignore = [ '.git', '.idea', '.vscode' ]
-    if (isExists && !await isEmpty(targetDir, ignore)) {
-      const overwrite = options.overwrite
-        ? YesOrNo.Yes
-        : await select({
-          message: MESSAGES.DIRECTION_CONFLICT_QUESTION(targetDir),
-          options: [
-            {
-              label: 'Cancel operation',
-              value: YesOrNo.No,
-            },
-            {
-              label: 'Remove files and continue',
-              value: YesOrNo.Yes,
-            },
-            {
-              label: 'Ignore files and continue',
-              value: YesOrNo.Null,
-            },
-          ],
-        })
-      assertPrompt(overwrite)
-      switch (overwrite) {
-        case YesOrNo.Yes:
-          await emptyDir(targetDir, ignore)
-          break
-        case YesOrNo.No:
-          process.exit(0)
-      }
-    }
+    await handleDirConflict(targetDir, options)
     
     // 3. Get package name
-    let packageName = basename(resolve(targetDir))
-    if (!isValidPackageName(packageName)) {
-      const packageNameResult = await text({
+    const pkgName = basename(resolve(targetDir))
+    const packageName = isValidPackageName(pkgName)
+      ? pkgName
+      : await text({
         message: MESSAGES.PACKAGE_NAME_QUESTION,
-        initialValue: toValidPackageName(packageName),
-        placeholder: toValidPackageName(packageName),
+        initialValue: toValidPackageName(pkgName),
+        placeholder: toValidPackageName(pkgName),
         validate(val) {
           if (!isValidPackageName(val)) {
-            return 'Invalid package.json name'
+            return 'Invalid'
           }
         },
       }) as string
-      assertPrompt(packageNameResult)
-      packageName = packageNameResult
-    }
+    assertPrompt(packageName)
     
     // 4. Get project description
     const description = await text({
@@ -334,42 +317,24 @@ export class Action {
     // 5. Choose a package manager
     const pkgManager = await select({
       message: MESSAGES.PACKAGE_MANAGER_QUESTION,
-      options: [
-        PackageManager.NPM,
-        PackageManager.YARN,
-        PackageManager.PNPM,
-      ].map(k => {
-        try {
-          const version = execSync(`${ k } --version`, { encoding: 'utf-8', stdio: 'pipe' })
-          return {
-            label: k,
-            value: k,
-            hint: version.trim(),
-          }
-        } catch (e) {
-          return {
-            label: k,
-            value: k,
-            hint: undefined,
-          }
-        }
-      }).filter(k => k.hint),
-    }) as PackageManager
+      options: (await Promise.all([
+        PkgManager.PNPM,
+        PkgManager.NPM,
+        PkgManager.YARN,
+      ].map(async k => {
+        const version = await checkVersion(k)
+        return { label: k, value: k, hint: version }
+      }))).filter(k => k.hint),
+    }) as PkgManager
     assertPrompt(pkgManager)
     
     // 6. Choose an HTTP library
     const httpLib = await select({
       message: MESSAGES.HTTP_LIBRARY_QUESTION,
       options: [
-        {
-          label: HttpLibrary.EXPRESS,
-          value: HttpLibrary.EXPRESS,
-        },
-        {
-          label: HttpLibrary.FASTIFY,
-          value: HttpLibrary.FASTIFY,
-        },
-      ],
+        HttpLibrary.EXPRESS,
+        HttpLibrary.FASTIFY,
+      ].map(k => ({ label: k, value: k })),
     }) as HttpLibrary
     assertPrompt(httpLib)
     
