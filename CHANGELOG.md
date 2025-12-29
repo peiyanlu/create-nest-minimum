@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.43](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.42...0.0.43) (2025-12-29)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **deps:** update all non-major dependencies ([9712473](https://github.com/peiyanlu/create-nest-minimum/commit/9712473f813d55732771b7b7e573d39410b29f01))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** update all non-major dependencies ([07a378e](https://github.com/peiyanlu/create-nest-minimum/commit/07a378e0818ad39a5642b586cb87fc86c3019aeb))
+* **deps:** update dependency pnpm to v10.26.1 ([ded4f05](https://github.com/peiyanlu/create-nest-minimum/commit/ded4f05cb4dcb662eb868b6249cbcd8d2f980c63))
+* **deps:** update dependency pnpm to v10.26.2 ([901f63e](https://github.com/peiyanlu/create-nest-minimum/commit/901f63e19dd8da5c6593faa75ed8445c4f822d09))
+
 ## [0.0.42](///compare/0.0.41...0.0.42) (2025-12-20)
 
 ## [0.0.41](///compare/0.0.4...0.0.41) (2025-12-09)
