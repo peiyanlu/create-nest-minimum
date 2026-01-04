@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.44](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.43...0.0.44) (2026-01-04)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **deps:** update all non-major dependencies ([43f5296](https://github.com/peiyanlu/create-nest-minimum/commit/43f52960cde3d18d0ad7b61ea9513d6229ef73d1))
+
 ## [0.0.43](https://github.com/peiyanlu/create-nest-minimum/compare/0.0.42...0.0.43) (2025-12-29)
 
 ### 🐛 Bug Fixes | Bug 修复
