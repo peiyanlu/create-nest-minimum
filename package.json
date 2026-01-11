@@ -28,11 +28,11 @@
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.4",
     "release-it-pnpm": "^4.6.6",
-    "@types/node": "^24.10.4",
-    "release-it": "^19.2.2",
+    "@types/node": "^24.10.7",
+    "release-it": "^19.2.3",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16",
-    "tsdown": "^0.18.4",
+    "tsdown": "^0.19.0",
     "@vitest/coverage-v8": "^4.0.16"
   },
   "private": false,
