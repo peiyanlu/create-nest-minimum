@@ -26,13 +26,13 @@
     "@peiyanlu/cli-tools": "^0.0.1"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^10.0.4",
+    "@release-it/conventional-changelog": "^10.0.5",
     "release-it-pnpm": "^4.6.6",
-    "@types/node": "^24.10.9",
+    "@types/node": "^24.10.12",
     "release-it": "^19.2.4",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18",
-    "tsdown": "^0.20.1",
+    "tsdown": "^0.20.3",
     "@vitest/coverage-v8": "^4.0.18"
   },
   "private": false,
