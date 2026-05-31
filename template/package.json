@@ -28,7 +28,7 @@
     "@types/supertest": "^6.0.3",
     "@vitest/coverage-v8": "^4.1.7",
     "supertest": "^7.2.2",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "unplugin-swc": "^1.5.9",
     "vitest": "^4.1.7"
   },
