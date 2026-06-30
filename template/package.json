@@ -13,24 +13,24 @@
     "start:prod": "node dist/main.js"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.24",
-    "@nestjs/core": "^11.1.24",
-    "@nestjs/platform-express": "^11.1.24",
-    "@nestjs/platform-fastify": "^11.1.24",
+    "@nestjs/common": "^11.1.27",
+    "@nestjs/core": "^11.1.27",
+    "@nestjs/platform-express": "^11.1.27",
+    "@nestjs/platform-fastify": "^11.1.27",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
-    "@nestjs/cli": "^11.0.21",
-    "@nestjs/testing": "^11.1.24",
+    "@nestjs/cli": "^11.0.23",
+    "@nestjs/testing": "^11.1.27",
     "@swc/cli": "^0.8.1",
-    "@swc/core": "^1.15.40",
+    "@swc/core": "^1.15.43",
     "@types/node": "^24.12.4",
     "@types/supertest": "^6.0.3",
-    "@vitest/coverage-v8": "^4.1.7",
+    "@vitest/coverage-v8": "^4.1.9",
     "supertest": "^7.2.2",
     "typescript": "^5.9.3",
     "unplugin-swc": "^1.5.9",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.9"
   },
   "engines": {
     "node": ">=20.19.6"
