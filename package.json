@@ -26,12 +26,12 @@
     "commander": "^14.0.3"
   },
   "devDependencies": {
-    "@peiyanlu/release": "^0.0.12",
+    "@peiyanlu/release": "^0.0.15",
     "@types/node": "^24.12.4",
-    "@vitest/coverage-v8": "^4.1.7",
-    "tsdown": "^0.22.1",
+    "@vitest/coverage-v8": "^4.1.9",
+    "tsdown": "^0.22.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.9"
   },
   "private": false,
   "engines": {
