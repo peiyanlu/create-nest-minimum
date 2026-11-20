@@ -26,7 +26,7 @@
     "commander": "^14.0.3"
   },
   "devDependencies": {
-    "@peiyanlu/release": "^0.0.16",
+    "@peiyanlu/release": "^2.2.0",
     "@types/node": "^24.12.4",
     "@vitest/coverage-v8": "^4.1.12",
     "tsdown": "^0.23.7",
